@@ -18,7 +18,7 @@ return (
                     <li> HOME </li>
                     <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
                 </NavLink>
-                <NavLink to='/doctor'>
+                <NavLink to='/doctors'>
                     <li>DOCTORS</li>
                     <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
                 </NavLink>

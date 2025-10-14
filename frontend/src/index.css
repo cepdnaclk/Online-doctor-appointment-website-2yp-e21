@@ -2,7 +2,7 @@
 
 @theme {
   /* Single primary color - use bg-primary, text-primary, border-primary */
-  --color-primary: #B018E7;
+  --color-primary: #801CC4;
   
   /* Or define a full color scale for bg-primary-500, text-primary-600, etc. */
   --color-primary-50: #D483F1;
@@ -19,4 +19,8 @@
 /* Active navigation link styling */
 .active hr {
   @apply block;
+}
+
+::-webkit-scrollbar{
+  @apply hidden
 }
