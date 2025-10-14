@@ -14,6 +14,9 @@
   --color-primary-600: #560E70;
   --color-primary-700: #410A55;
   --color-primary-800: #340943;
+
+  --grid-template-columns-auto: repeat(auto-fill, minmax(200px, 1fr));
+
 }
 
 /* Active navigation link styling */
