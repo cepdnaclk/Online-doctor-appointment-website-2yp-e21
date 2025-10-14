@@ -11,7 +11,7 @@ const Navbar = () => {
 
 return (
     // this is the navigation bar
-    <div class='flex  justify-between items-center py-1'>
+    <div className='flex  justify-between items-center py-1'>
             <Link to='/'><img src={assets.logo} alt="" class='w-30 cursor-pointer'/></Link>
             <ul class='flex gap-8 items-center'>
                 <NavLink to='/'>

@@ -12,7 +12,7 @@ const Footer = () => {
             </div>
 
             {/*---middle side section --*/}
-            <div className='py-17 px-5 items-center'>
+            <div className='py-17 px-5'>
                 <p className='text-xl font-medium mb-5'>COMPANY</p>
                 <ul className='flex flex-col gap-2 text-gray-600'>
                     <li>Home</li>
