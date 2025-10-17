@@ -8,9 +8,6 @@ const TopDoctors = () => {
     // to navigate the respected doctor
     const navigate = useNavigate()
     const {doctors} = useContext(AppContext)
-    
-    // Debug: Check if doctors data is loaded
-    console.log('Doctors data:', doctors)
 
   return (
     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
@@ -27,7 +24,7 @@ const TopDoctors = () => {
                             <p className='w-2 h-2 bg-green-600 rounded-full'></p><p>Available</p>
                         </div>
                         <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
-                        <p className='text-gray-700 text-base'>{item.speciality}</p>
+                        <p className='text-gray-600 text-sm'>{item.speciality}</p>
                     </div>
                 </div> 
 
