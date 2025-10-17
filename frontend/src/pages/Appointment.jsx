@@ -114,33 +114,44 @@ const Appointment = () => {
             </p>
           </div>
         </div>
-        {/* --Booking the slots---*/}
+
+        {/* --- booking slots --- */}
         <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
           <p>Booking Slots</p>
-          <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
-            {
-              docSlots.length && docSlots.map((item,index)=>(
-                <div onClick={()=>setSlotIndex(index)} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' :'border-2 border-primary'}`} key={index}>
-                  <p>{item[0] && dayOfWeek[item[0].datetime.getDay()]}</p>
-                  <p>{item[0] && item[0].datetime.getDate()}</p>
-                </div>
-              ))
-            }
+          
+          {/* --- days --- */}
+          <div className='flex gap-3 mt-3 overflow-x-auto pb-3'>
+            {docSlots.map((slot,index)=>(
+              <button 
+                key={index}
+                onClick={()=>setSlotIndex(index)}
+                className={`border rounded-lg min-w-20 py-2 text-center ${index === slotIndex ? 'border-primary text-primary' : 'border-gray-300 text-gray-500'}`}
+              >
+                {dayOfWeek[new Date(slot[0].datetime).getDay()]}
+                <p className='text-xs mt-1'>{new Date(slot[0].datetime).getDate()}</p>
+              </button>
+            ))}
           </div>
-          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
-              {docSlots.length && docSlots[slotIndex].map((item,index)=>(
-                <p onClick={()=>setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-primary text-white': 'text-gray-400 border border-primary'}`} key={index}>
-                  {item.time.toLowerCase()}
-                </p>
-              ))}
+
+          {/* --- time slots --- */}
+          <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mt-4'>
+            {docSlots[slotIndex]?.map((slot,index)=>(
+              <button
+                key={index}
+                onClick={()=>setSlotTime(slot.time)}
+                className={`border rounded-lg py-2 text-sm ${slot.time === slotTime ? 'border-primary text-primary' : 'border-gray-300 text-gray-500'}`}
+              >
+                {slot.time}
+              </button>
+            ))}
           </div>
- 
-            <button className='bg-primary text-white rounded-full px-16 py-3 my-10 text-sm cursor-pointer'>Book the Appointment</button>
-        
+
+          <button className='bg-primary text-white rounded-full px-16 py-3 my-10 text-sm cursor-pointer'>
+            Book the Appointment
+          </button>
         </div>
-        
-        {/* Listing the Related Doctors as a another component */}
-        <RelatedDoctors docId={docId} speciality={docInfo.speciality}></RelatedDoctors>
+
+        <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
     </div>
   )
 }
@@ -148,7 +159,7 @@ const Appointment = () => {
 export default Appointment
 
 
-/*useParams(): වෙබ් ලිපිනයෙන් (URL) එන docId එක, එනම් වෛද්‍යවරයාගේ හඳුනාගැනීමේ අංකය (ID) ලබා ගනී.
+/*useParams(): වෙබ් ලිපිනයෙන් (URL) එනම් docId එක, එනම් වෛද්‍යවරයාගේ හඳුනාගැනීමේ අංකය (ID) ලබා ගනී.
 
 useContext(AppContext): යෙදුම පුරාම බෙදාගෙන ඇති දත්ත (AppContext) වෙතින් සියලුම වෛද්‍යවරුන්ගේ ලැයිස්තුව (doctors) සහ මුදල් ඒකකයේ සංකේතය (currencySymbol) ලබා ගනී.
 
