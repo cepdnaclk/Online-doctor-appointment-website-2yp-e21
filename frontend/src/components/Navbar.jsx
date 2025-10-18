@@ -12,23 +12,39 @@ const Navbar = () => {
 return (
     // this is the navigation bar
     <div className='flex  justify-between items-center py-1'>
-            <Link to='/'><img src={assets.logo} alt="" class='w-30 cursor-pointer'/></Link>
-            <ul class='flex gap-8 items-center'>
+            <Link to='/'><img src={assets.logo} alt="" className='w-50 cursor-pointer'/></Link>
+            <ul className='flex gap-8 items-center'>
                 <NavLink to='/'>
-                    <li> HOME </li>
-                    <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
+                    {({isActive}) => (
+                        <>
+                            <li className={`hover:text-primary hover:drop-shadow-[0_0_8px_rgba(176,24,231,0.6)] transition-all duration-300 ${isActive ? 'text-primary-200 font-semibold' : 'text-gray-700'}`}> HOME </li>
+                            <hr className={`border-none outline-none h-0.5 bg-primary-200 w-full m-auto ${isActive ? 'block' : 'hidden'}`}/>
+                        </>
+                    )}
                 </NavLink>
                 <NavLink to='/doctors'>
-                    <li>DOCTORS</li>
-                    <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
+                    {({isActive}) => (
+                        <>
+                            <li className={`hover:text-primary hover:drop-shadow-[0_0_8px_rgba(176,24,231,0.6)] transition-all duration-300 ${isActive ? 'text-primary-200 font-semibold' : 'text-gray-700'}`}>DOCTORS</li>
+                            <hr className={`border-none outline-none h-0.5 bg-primary-200  w-full m-auto ${isActive ? 'block' : 'hidden'}`}/>
+                        </>
+                    )}
                 </NavLink>
                 <NavLink to='/about'>
-                    <li>ABOUT</li>
-                    <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
+                    {({isActive}) => (
+                        <>
+                            <li className={`hover:text-primary hover:drop-shadow-[0_0_8px_rgba(176,24,231,0.6)] transition-all duration-300 ${isActive ? 'text-primary-200 font-semibold' : 'text-gray-700'}`}>ABOUT</li>
+                            <hr className={`border-none outline-none h-0.5 bg-primary-200 w-full m-auto ${isActive ? 'block' : 'hidden'}`}/>
+                        </>
+                    )}
                 </NavLink>
                 <NavLink to='/contact'>
-                    <li>CONTACT</li>
-                    <hr  class='boarder-none outline-none h-0.5 bg-primary w-5/5 m-auto hidden'/>
+                    {({isActive}) => (
+                        <>
+                            <li className={`hover:text-primary hover:drop-shadow-[0_0_8px_rgba(176,24,231,0.6)] transition-all duration-300 ${isActive ? 'text-primary-200 font-semibold' : 'text-gray-700'}`}>CONTACT</li>
+                            <hr className={`border-none outline-none h-0.5 bg-primary-200 w-full m-auto ${isActive ? 'block' : 'hidden'}`}/>
+                        </>
+                    )}
                 </NavLink>
             </ul>
             <div class='flex items-center gap-4 '>{
