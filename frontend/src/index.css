@@ -32,3 +32,13 @@
 *{
   font-family: Outfit;
 }
+
+@media (max-width:740px){
+  .active p{
+    @apply text-white bg-primary-200
+  }
+}
+
+/*@media (max-width: 740px): මෙය media query එකකි. මෙහි ඇතුළත ඇති CSS නීති ක්‍රියාත්මක වන්නේ,
+ වෙබ් browser එකේ තිරයේ පළල pixels 740ක් හෝ ඊට වඩා අඩු වූ විට පමණි. එනම්, මෙය ජංගම දුරකථන
+  වැනි කුඩා තිර සඳහා වන style එකකි*/
