@@ -7,6 +7,7 @@ const Doctors = () => {
   const {speciality} = useParams()
   const navigate = useNavigate();
   const [filterDoc, setFilterDoc] = useState([])
+  const [showFilter,setShowFilter] = useState(false)
   const {doctors} = useContext(AppContext)
 
 
@@ -24,8 +25,9 @@ const Doctors = () => {
   return (
     <div>
     <p className='text-gray-600'>Filter by Speciality</p>
+    <button onClick={()=>setShowFilter(prev=>!prev)} className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter?'bg-primary-200 text-white':''}`}>Filter</button>
     <div className='flex flex-col sm:flex-row items-start gap-5 mt-5' >
-      <div className='flex flex-col gap-4 text-sm text-gray-600'>
+      <div className={`flex-col gap-4 text-sm text-gray-600 ${showFilter?'flex' :'hidden sm:flex'}`}>
         <p onClick={()=>speciality === 'General physician' ? navigate('/doctors') : navigate('/doctors/General physician')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded-xl transition-all cursor-pointer ${speciality === "General physician" ? "bg-primary-50 text-black" : ""}`}>General physician</p> {/*conditionally styling here*/}
         <p onClick={()=>speciality === 'Gynecologist' ? navigate('/doctors') : navigate('/doctors/Gynecologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded-xl transition-all cursor-pointer ${speciality === "Gynecologist" ? "bg-primary-50 text-black" : ""}`}>Gynecologist</p>
         <p onClick={()=>speciality === 'Dermatologist' ? navigate('/doctors') : navigate('/doctors/Dermatologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded-xl transition-all cursor-pointer ${speciality === "Dermatologist" ? "bg-primary-50 text-black" : ""}`}>Dermatologist</p>
@@ -38,7 +40,7 @@ const Doctors = () => {
       <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
         {
           filterDoc.map((item,index)=>(
-            <div onClick={()=>navigate(`/appointment/${item._id}`)} key={index} className='border border-primary-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] duration-300'>
+            <div onClick={()=>{navigate(`/appointment/${item._id}`); scrollTo(0,0)}} key={index} className='border border-primary-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] duration-300'>
                     <img className='bg-primary-200' src={item.image} alt="" />
                     <div className='p-4'>
                         <div className='flex items-center gap-2 text-sm text-center text-green-500'>
