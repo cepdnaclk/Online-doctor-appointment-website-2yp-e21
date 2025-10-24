@@ -2,6 +2,7 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
+import jwt from 'jsonwebtoken'
 
 // API for adding doctor 
 
@@ -84,6 +85,48 @@ const addDoctor = async (req, res) => {
     }
 }
 
+// API for admin login
+const loginAdmin = async (req, res) =>{
+    try {
+        if (!req.body) {
+            return res.status(400).json({ success:false, message:'Request body is missing. Set Content-Type and include email and password.' })
+        }
+        const {email, password} = req.body
+        if (!email || !password) {
+            return res.status(400).json({ success:false, message:'email and password are required' })
+        }
+        
+        if((email === process.env.ADMIN_EMAIL) && (password === process.env.ADMIN_PASSWORD)){
+            // const payload = { 
+            //     id: "admin_user_01", 
+            //     role: "admin" 
+            //             };
+
+            // const token = jwt.sign(payload, process.env.JWT_SECRET) , more applicable way
+            const token = jwt.sign(email+password, process.env.JWT_SECRET)
+            res.json({success:true , token})
+            
+        }else{
+            res.json({success:false, message:"Invalid Credentials"})
+        }
+
+    }catch(error){
+        console.log(error)
+        res.json({success:false, message:error.message})
+    }
+}
 
 
-export { addDoctor }
+export { addDoctor , loginAdmin }
+
+
+
+
+/* without using passowrd in jason web token , 
+ආරක්ෂිත ක්‍රමය
+const payload = { 
+    id: "admin_user_01", 
+    role: "admin" 
+};
+const token = jwt.sign(payload, process.env.JWT_SECRET);
+*/
