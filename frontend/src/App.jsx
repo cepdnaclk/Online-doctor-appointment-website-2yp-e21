@@ -8,6 +8,7 @@ import Contact from './pages/Contact'
 import MyProfile from './pages/MyProfile'
 import MyAppointments from './pages/MyAppointments'
 import Appointment from './pages/Appointment'
+import MockPayment from './pages/MockPayment'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 // eslint-disable-next-line no-unused-vars
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/my-appointments' element={<MyAppointments/>}/>
         <Route path='/appointment/:docId' element={<Appointment/>}/>
+        <Route path='/mock-payment/:appointmentId' element={<MockPayment/>}/>
       </Routes>
       <Footer/>
     </div>

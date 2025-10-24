@@ -7,87 +7,7 @@ const MyAppointments = () => {
 
   const {backendUrl, token, getDoctorsData} = useContext(AppContext)
   const [appointments,setAppointments] = useState([])
-  const [sdkLoaded, setSdkLoaded] = useState(false) // added
   const months = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-
-  // Load PayHere SDK dynamically (fallback if not already present)
-  useEffect(() => {
-    // If already available (from index.html), mark as loaded
-    if (typeof window !== 'undefined' && window.payhere) {
-      setSdkLoaded(true)
-      console.log('PayHere SDK ready (preloaded).')
-      return
-    }
-
-    const SANDBOX_URL = 'https://sandbox.payhere.lk/lib/payhere.js'
-    const LIVE_URL = 'https://www.payhere.lk/lib/payhere.js'
-
-    const findExistingScript = () => {
-      const scripts = Array.from(document.getElementsByTagName('script'))
-      return scripts.find(s => (s.src.includes('payhere.lk') && s.src.includes('/lib/payhere.js')) )
-    }
-
-    const attachListeners = (scriptEl) => {
-      if (!scriptEl) return
-      scriptEl.addEventListener('load', onLoad)
-      scriptEl.addEventListener('error', onError)
-    }
-
-    const onLoad = () => {
-      if (window.payhere) {
-        setSdkLoaded(true)
-        console.log('PayHere SDK loaded successfully')
-      }
-    }
-    const onError = () => {
-      console.error('Failed to load PayHere SDK script tag')
-      toast.error('Failed to load payment system. Please check your internet connection or allow external scripts.')
-    }
-
-    const inject = (url) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.type = 'text/javascript'
-      script.async = true
-      script.onload = onLoad
-      script.onerror = onError
-      document.head.appendChild(script)
-      return script
-    }
-
-    let scriptRef = findExistingScript()
-    if (scriptRef) {
-      attachListeners(scriptRef)
-    } else {
-      scriptRef = inject(SANDBOX_URL)
-    }
-
-    // Fallback: if not ready in 2.5s, try loading from LIVE domain (still uses sandbox mode via payload)
-    const fallbackId = setTimeout(() => {
-      if (!window.payhere) {
-        console.warn('Sandbox SDK not ready, trying LIVE SDK URL as fallback')
-        inject(LIVE_URL)
-      }
-    }, 2500)
-
-    // Safety timeout to notify user if still not ready
-    const timeoutId = setTimeout(() => {
-      if (!window.payhere) {
-        console.warn('PayHere SDK not ready after timeout')
-        toast.warning('Payment system is still loading... If this persists, disable ad-blockers and try again.')
-      }
-    }, 5000)
-
-    return () => {
-      clearTimeout(fallbackId)
-      clearTimeout(timeoutId)
-      const ex = findExistingScript()
-      if (ex) {
-        ex.removeEventListener('load', onLoad)
-        ex.removeEventListener('error', onError)
-      }
-    }
-  }, [])
 
 
 
@@ -149,74 +69,12 @@ const MyAppointments = () => {
     }
   }
 
-  // handle payment
-  // Fallback: submit standard HTML form to PayHere if SDK is unavailable
-  const submitStandardCheckout = (payment) => {
-    try {
-      const form = document.createElement('form')
-      form.method = 'POST'
-      form.action = (payment.sandbox ? 'https://sandbox.payhere.lk/pay/checkout' : 'https://www.payhere.lk/pay/checkout')
-      form.target = '_self'
-
-      Object.entries(payment).forEach(([key, value]) => {
-        // Only include primitive fields PayHere expects
-        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-          const input = document.createElement('input')
-          input.type = 'hidden'
-          input.name = key
-          input.value = String(value)
-          form.appendChild(input)
-        }
-      })
-
-      document.body.appendChild(form)
-      form.submit()
-      document.body.removeChild(form)
-    } catch (e) {
-      console.error('Standard checkout submit failed', e)
-      toast.error('Unable to start payment. Please try again or disable ad-blockers.')
-    }
-  }
-
   const handlePayment = async (appointmentId) => {
     try {
       const { data } = await axios.post(backendUrl + '/api/user/generate-payment', { appointmentId }, { headers: { token } });
       if (data.success) {
-        const payment = data.payment;
-        
-        // In development, prefer fallback to avoid CORS from localhost
-        const isDev = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV
-        if (isDev) {
-          submitStandardCheckout(payment)
-          return
-        }
-
-        if (window.payhere) {
-          // Use window.payhere when available
-          window.payhere.onCompleted = function (orderId) {
-            console.log("Payment completed. OrderID:" + orderId);
-            toast.success("Payment completed");
-            getUserAppointments();
-          };
-          
-          window.payhere.onDismissed = function () {
-            console.log("Payment dismissed");
-            toast.error("Payment dismissed");
-          };
-          
-          window.payhere.onError = function (error) {
-            console.log("PayHere SDK Error:", error);
-            // Auto-fallback to standard checkout to avoid CORS/extension issues
-            toast.warning('Payment encountered an SDK error, switching to fallback checkout...')
-            submitStandardCheckout(payment)
-          };
-          
-          window.payhere.startPayment(payment);
-        } else {
-          // Fallback to standard checkout form post
-          toast.info('Starting payment with fallback mode...')
-          submitStandardCheckout(payment)
-        }
+        // Redirect to mock payment page
+        window.location.href = data.payment.redirectUrl;
       } else {
         toast.error(data.message);
       }
@@ -256,9 +114,9 @@ const MyAppointments = () => {
                 <button 
                   onClick={() => handlePayment(item._id)}
                   className={`text-sm text-center sm:min-w-48 py-2 border rounded transition-all duration-300 hover:bg-blue-500 hover:text-white cursor-pointer`}
-                  title={sdkLoaded ? 'Pay with PayHere' : 'Pay with PayHere (fallback)'}
+                  title="Pay Online"
                 >
-                  {sdkLoaded ? 'Pay Online' : 'Pay Online (fallback)'}
+                  Pay Online
                 </button>
               )}
               {item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-800 rounded text-green-600'>Paid</button>}

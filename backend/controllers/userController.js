@@ -9,6 +9,7 @@ import crypto from 'crypto'
 
 
 
+
 // API to register a user
 const registerUser = async (req, res) => {
     try {
@@ -275,97 +276,141 @@ const cancelAppointment = async (req,res)=>{
 
 // userController.js
 
-const generatePayment = async (req, res) => {
+// const generatePayment = async (req, res) => {
+//     try {
+//         const { appointmentId } = req.body;
+//         const appointment = await appointmentModel.findById(appointmentId);
+
+//         if (!appointment) {
+//             return res.json({ success: false, message: "Appointment not found" });
+//         }
+
+//         const merchant_id = process.env.PAYHERE_MERCHANT_ID;
+//         const merchant_secret = process.env.PAYHERE_MERCHANT_SECRET;
+        
+//         // --- 1. changed here ---
+//         const order_id = appointment._id.toString(); // Convert ObjectId to string
+        
+//         const amount = Number(appointment.amount || 0);
+//         const currency = "LKR";
+//         const amountFormatted = amount.toFixed(2).toString(); // This is correct
+        
+//         const {
+//             first_name = appointment.userData.name.split(' ')[0],
+//             last_name = appointment.userData.name.split(' ')[1] || '',
+//             email = appointment.userData.email,
+//             phone = appointment.userData.phone || '0771234567',
+//             address = appointment.userData.address ? appointment.userData.address.line1 : 'No Address',
+//             city = appointment.userData.address ? appointment.userData.address.city : 'Colombo',
+//             country = 'Sri Lanka'
+//         } = appointment.userData;
+
+
+//         const merchantSecretMd5 = crypto.createHash('md5').update(merchant_secret).digest('hex').toUpperCase();
+        
+//         // --- 2. changed this ---
+//         const hash = crypto
+//             .createHash('md5')
+//             .update(merchant_id + order_id + amountFormatted + currency + merchantSecretMd5) // Use + instead of ${}
+//             .digest('hex')
+//             .toUpperCase();
+
+//         const notifyUrl = process.env.PAYHERE_NOTIFY_URL || `${process.env.BACKEND_URL}/api/user/verify-payment`;
+
+//         const payment = {
+//             sandbox: true,
+//             merchant_id,
+//             return_url: `${process.env.FRONTEND_URL}/my-appointments`,
+//             cancel_url: `${process.env.FRONTEND_URL}/my-appointments`,
+//             notify_url: notifyUrl,
+//             order_id,
+//             items: `Appointment with ${appointment.docData.name}`,
+//             amount: amountFormatted,
+//             currency,
+//             first_name,
+//             last_name,
+//             email,
+//             phone,
+//             address,
+//             city,
+//             country,
+//             hash
+//         };
+
+//         res.json({ success: true, payment });
+
+//     } catch (error) {
+//         console.log(error);
+//         res.json({ success: false, message: error.message });
+//     }
+// }
+
+// // API to verify payment and update database
+// const verifyPayment = async (req, res) => {
+//     try {
+//         const { order_id, payment_id, amount, currency, status_code } = req.body;
+
+//         if (status_code == 2) { // Payment success
+//             const appointment = await appointmentModel.findById(order_id);
+//             if (appointment) {
+//                 await appointmentModel.findByIdAndUpdate(order_id, { payment: true });
+//                 const doctor = await doctorModel.findById(appointment.docId);
+//                 if (doctor) {
+//                     const newEarnings = (doctor.earnings || 0) + appointment.amount;
+//                     await doctorModel.findByIdAndUpdate(appointment.docId, { earnings: newEarnings });
+//                 }
+//             }
+//         }
+//         res.status(200).send(); // Respond to PayHere
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send();
+//     }
+// }
+
+// Mock Payment Gateway
+
+// API to generate a mock payment session
+const generateMockPayment = (req, res) => {
     try {
         const { appointmentId } = req.body;
-        const appointment = await appointmentModel.findById(appointmentId);
-
-        if (!appointment) {
-            return res.json({ success: false, message: "Appointment not found" });
+        if (!appointmentId) {
+            return res.json({ success: false, message: "Appointment ID is required" });
         }
-
-        const merchant_id = process.env.PAYHERE_MERCHANT_ID;
-        const merchant_secret = process.env.PAYHERE_MERCHANT_SECRET;
-        
-        // --- 1. changed here ---
-        const order_id = appointment._id.toString(); // Convert ObjectId to string
-        
-        const amount = Number(appointment.amount || 0);
-        const currency = "LKR";
-        const amountFormatted = amount.toFixed(2).toString(); // This is correct
-        
-        const {
-            first_name = appointment.userData.name.split(' ')[0],
-            last_name = appointment.userData.name.split(' ')[1] || '',
-            email = appointment.userData.email,
-            phone = appointment.userData.phone || '0771234567',
-            address = appointment.userData.address ? appointment.userData.address.line1 : 'No Address',
-            city = appointment.userData.address ? appointment.userData.address.city : 'Colombo',
-            country = 'Sri Lanka'
-        } = appointment.userData;
-
-
-        const merchantSecretMd5 = crypto.createHash('md5').update(merchant_secret).digest('hex').toUpperCase();
-        
-        // --- 2. changed this ---
-        const hash = crypto
-            .createHash('md5')
-            .update(merchant_id + order_id + amountFormatted + currency + merchantSecretMd5) // Use + instead of ${}
-            .digest('hex')
-            .toUpperCase();
-
-        const notifyUrl = process.env.PAYHERE_NOTIFY_URL || `${process.env.BACKEND_URL}/api/user/verify-payment`;
-
-        const payment = {
-            sandbox: true,
-            merchant_id,
-            return_url: `${process.env.FRONTEND_URL}/my-appointments`,
-            cancel_url: `${process.env.FRONTEND_URL}/my-appointments`,
-            notify_url: notifyUrl,
-            order_id,
-            items: `Appointment with ${appointment.docData.name}`,
-            amount: amountFormatted,
-            currency,
-            first_name,
-            last_name,
-            email,
-            phone,
-            address,
-            city,
-            country,
-            hash
+        // Simulate a payment session creation
+        const paymentSession = {
+            sessionId: `mock_session_${appointmentId}_${Date.now()}`,
+            appointmentId,
+            redirectUrl: `${process.env.FRONTEND_URL}/mock-payment/${appointmentId}`
         };
-
-        res.json({ success: true, payment });
-
+        res.json({ success: true, payment: paymentSession });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: error.message });
+        res.json({ success: false, message: "Failed to generate mock payment session" });
     }
 }
 
-// API to verify payment and update database
-const verifyPayment = async (req, res) => {
+// API to verify mock payment and update database
+const verifyMockPayment = async (req, res) => {
     try {
-        const { order_id, payment_id, amount, currency, status_code } = req.body;
-
-        if (status_code == 2) { // Payment success
-            const appointment = await appointmentModel.findById(order_id);
-            if (appointment) {
-                await appointmentModel.findByIdAndUpdate(order_id, { payment: true });
-                const doctor = await doctorModel.findById(appointment.docId);
-                if (doctor) {
-                    const newEarnings = (doctor.earnings || 0) + appointment.amount;
-                    await doctorModel.findByIdAndUpdate(appointment.docId, { earnings: newEarnings });
-                }
+        const { appointmentId } = req.body;
+        if (!appointmentId) {
+            return res.json({ success: false, message: "Appointment ID is required" });
+        }
+        const appointment = await appointmentModel.findById(appointmentId);
+        if (appointment) {
+            await appointmentModel.findByIdAndUpdate(appointmentId, { payment: true });
+            const doctor = await doctorModel.findById(appointment.docId);
+            if (doctor) {
+                const newEarnings = (doctor.earnings || 0) + appointment.amount;
+                await doctorModel.findByIdAndUpdate(appointment.docId, { earnings: newEarnings });
             }
         }
-        res.status(200).send(); // Respond to PayHere
+        res.json({ success: true, message: "Payment successful and appointment updated" });
     } catch (error) {
         console.log(error);
-        res.status(500).send();
+        res.json({ success: false, message: "Payment verification failed" });
     }
 }
 
-
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, generatePayment, verifyPayment }
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, generateMockPayment, verifyMockPayment }

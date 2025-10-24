@@ -151,27 +151,27 @@ const doctorProfile = async (req, res) => {
 // API to update doctor profile data from Doctor Panel
 // API to update doctor profile data from Doctor Panel
 const updateDoctorProfile = async (req, res) => {
-    try {
-        // 1. Get the docId from the auth middleware (NOT req.body)
-        const docId = req.docId; 
+ try {
+ // 1. Get the docId from the auth middleware (NOT req.body)
+ const docId = req.docId; 
 
-        // 2. Get all the fields you sent from the frontend
-        const { fees, address, available, about } = req.body;
+ // 2. Get all the fields you sent from the frontend
+ const { fees, address, available, about } = req.body;
 
-        // 3. Update the doctor using all the fields
-        await doctorModel.findByIdAndUpdate(docId, { 
-            fees, 
-            address, 
-            available, 
-            about // <-- Added the 'about' field here
-        })
-        
-        res.json({ success: true, message: 'Profile Updated' })
+ // 3. Update the doctor using all the fields
+ await doctorModel.findByIdAndUpdate(docId, { 
+ fees, 
+ address, 
+ available, 
+ about // <-- Added the 'about' field here
+ })
+ 
+ res.json({ success: true, message: 'Profile Updated' })
 
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message })
-    }
+} catch (error) {
+ console.log(error);
+ res.json({ success: false, message: error.message })
+ }
 }
 
 export {changeAvailability, doctorList, loginDoctor,
