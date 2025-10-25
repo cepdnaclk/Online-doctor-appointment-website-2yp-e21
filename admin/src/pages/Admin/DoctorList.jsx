@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useContext, useEffect } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 
@@ -39,6 +40,13 @@ const DoctorList = () => {
         ))}
       </div>
     </div>
+=======
+import React from 'react'
+
+const DoctorList = () => {
+  return (
+    <div>DoctorList</div>
+>>>>>>> 42c2ce37f1f08e6ea48824934668dcd844dd3f2b
   )
 }
 
