@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
-import { useContext } from 'react'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import loginImg from '../assets/login.jpg'
+import createImg from '../assets/create-account.jpg'
 
 const Login = () => {
 
@@ -50,31 +50,104 @@ const Login = () => {
   },[token])
 
   return (
-      <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
-        <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-100 sm:min-h-96 border rounded-xl text-white text-sm shadow-lg bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 hover:shadow-[0_0_30px_rgba(176,24,231,0.5)] transition-all duration-250'>
-          <p className='text-2xl font-semibold'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
-          <p className='text-sm'>Please {state === "Sign Up" ? "sign up" : "login"} to book your appointment</p>
-          {state === 'Sign Up' && <div className='w-full'>
-            <p>Full Name</p>
-            <input className='border border-white rounded w-full p-2 mt-1' type="text" onChange={(e)=>setName(e.target.value)} value={name} required />
-            </div>}
-            <div className='w-full'>
-            <p>Email</p>
-            <input className='border border-white rounded w-full p-2 mt-1' type="email" onChange={(e)=>setEmail(e.target.value)} value={email} required />
-            </div>
-            <div className='w-full'>
-            <p>Password</p>
-            <input className='border border-white rounded w-full p-2 mt-1' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} required />
-            </div>
-            <button className='bg-primary-600 text-white w-full my-2 py-2 rounded-md text-base cursor-pointer hover:bg-primary-500' type="submit">{state === 'Sign Up' ? "Create Account" : "Login"}</button>
-            {
-              state === 'Sign Up'
-              ? <p>Already have an account? <span onClick={()=>setState('Login')} className='text-gray-200 underline cursor-pointer'>Login here</span></p>
-              : <p>Create an new account? <span onClick={()=>setState('Sign Up')} className='text-gray-200 underline cursor-pointer'>Click here</span></p>
-            }
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-10">
+      <div className="bg-gray-800 rounded-3xl shadow-2xl flex flex-col lg:flex-row w-full max-w-4xl overflow-hidden">
+
+        {/* Left side: image (show different image for Login vs Sign Up) */}
+        <div className="lg:w-1/2 hidden lg:block">
+          <img
+            src={state === 'Sign Up' ? createImg : loginImg}
+            alt={state === 'Sign Up' ? 'Create Account' : 'Login'}
+            className="w-full h-full object-cover"
+          />
         </div>
 
-      </form>
+        {/* Right side: form */}
+        <div className="w-full lg:w-1/2 p-8 sm:p-10 flex flex-col justify-center">
+
+          {/* Header */}
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+            {state === 'Sign Up' ? 'Create Account' : 'Welcome Back'}
+          </h1>
+          <p className="text-gray-400 mb-6">
+            Please {state === 'Sign Up' ? 'sign up' : 'login'} to book your appointment
+          </p>
+
+          {/* Social login buttons (placeholders) */}
+          <div className="flex gap-4 mb-6">
+              <button type="button" className="flex items-center justify-center w-full py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition">
+                <img
+                  src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/google.svg"
+                  alt="Google"
+                  className="w-5 h-5 mr-2 invert"
+                />
+                <span>Login with Google</span>
+              </button>
+              <button type="button" className="flex items-center justify-center w-full py-2 px-4 rounded-xl bg-black hover:bg-neutral-900 text-white shadow-lg transition">
+                <img
+                  src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg"
+                  alt="Apple"
+                  className="w-5 h-5 mr-2 invert"
+                />
+                <span>Login with Apple</span>
+              </button>
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center text-gray-400 mb-6">
+            <hr className="flex-1 border-gray-600" />
+            <span className="px-2 text-sm">or</span>
+            <hr className="flex-1 border-gray-600" />
+          </div>
+
+          {/* Auth form */}
+          <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
+            {state === 'Sign Up' && (
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full px-4 py-2 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                required
+              />
+            )}
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full px-4 py-2 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full px-4 py-2 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+            />
+            <button
+              type="submit"
+              className="btn-gradient-shine py-2 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-bold shadow-lg hover:from-cyan-500 hover:to-purple-600 transition"
+            >
+              {state === 'Sign Up' ? 'Create Account' : 'Login'}
+            </button>
+
+            {/* Links */}
+            <div className="flex justify-between text-sm text-gray-400 mt-2">
+              <button type="button" className="hover:text-white transition">Forgot password?</button>
+              {state === 'Sign Up' ? (
+                <button type="button" onClick={() => setState('Login')} className="hover:text-white transition">Already have an account? Login</button>
+              ) : (
+                <button type="button" onClick={() => setState('Sign Up')} className="hover:text-white transition">New here? Sign up</button>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   )
 }
 

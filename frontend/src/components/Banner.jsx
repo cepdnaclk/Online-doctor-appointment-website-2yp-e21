@@ -7,7 +7,7 @@ const Banner = () => {
     const navigate = useNavigate();
 
     // Small, dependency-free counter component
-    const Counter = ({ end = 50, duration = 1500, suffix = '+', label }) => {
+    const Counter = ({ end = 50, duration = 1500, suffix = '+', label, as = 'div' }) => {
         const [val, setVal] = useState(0)
         const ref = useRef(null)
         const started = useRef(false)
@@ -35,18 +35,22 @@ const Banner = () => {
             return () => obs.disconnect()
         }, [end, duration])
 
-        return (
-            <div ref={ref} className="flex flex-col items-start">
-                <div className="flex items-baseline gap-1 tabular-nums text-4xl sm:text-5xl font-extrabold text-white drop-shadow-[0_2px_20px_rgba(216,0,255,0.25)]">
+        const WrapperEl = as || 'div'
+
+        return React.createElement(
+            WrapperEl,
+            { ref, className: 'inline-flex flex-col items-start' },
+            (
+                <span className="inline-flex items-baseline gap-1 tabular-nums text-4xl sm:text-5xl font-extrabold text-white drop-shadow-[0_2px_20px_rgba(216,0,255,0.25)]">
                     <span>{val}</span>
                     <span>{suffix}</span>
-                </div>
-                {label && (
-                    <span className="mt-1 inline-flex font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-300 text-sm sm:text-base">
-                        {label}
-                    </span>
-                )}
-            </div>
+                </span>
+            ),
+            label && (
+                <span className="mt-1 inline-flex font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-300 text-sm sm:text-base">
+                    {label}
+                </span>
+            )
         )
     }
 
@@ -60,7 +64,7 @@ const Banner = () => {
                     With
                     <span className='inline-flex items-baseline gap-1'>
                         {/* Animated 50+ inline */}
-                        <Counter end={50} duration={1400} suffix='+' />
+                        <Counter as="span" end={50} duration={1400} suffix='+' />
                     </span>
                     Trusted Doctors
                 </p>

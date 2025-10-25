@@ -6,14 +6,15 @@ import { assets } from '../assets/assets'
 import RelatedDoctors from '../components/RelatedDoctors'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { FaUserMd, FaGraduationCap, FaBriefcaseMedical, FaInfoCircle, FaDollarSign } from 'react-icons/fa'
 
 
 const Appointment = () => {
 
-  const { docId } = useParams()
+  const { id:docId } = useParams()
   const { doctors, currencySymbol, backendUrl, token, getDoctorsData } = useContext(AppContext)
   const dayOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
-  const [docInfo, setDocInfo] = useState(null) // eslint-disable-line no-unused-vars
+  const [docInfo, setDocInfo] = useState(null)
   const [docSlots, setDocSlots] = useState([])
   const [slotIndex, setSlotIndex] = useState(0) // times for the 
 
@@ -134,64 +135,110 @@ const Appointment = () => {
   // &&  using conditional rendernig is cruial otherwise the system try to find null.image ...
 
   return docInfo && (
-    <div>
-      {/* --- doctor details --- */}
-      <div className='flex flex-col sm:flex-row gap-4'>
-        <div>
-          <img className='bg-primary w-full sm:max-w-72 rounded-lg' src={docInfo.image} alt="" />
-        </div>
-
-        <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
-          {/*---doctor info: name ,degrer , expereince---*/}
-          <p className='flex items-center gap-2 text-2xl font-medium text-gray-900'>
-            {docInfo.name}
-            <img className='w-5' src={assets.verified_icon} alt="" />
-          </p>
-
-          <div className='flex items-center gap-2 text-sm mt-1 text-gray-600'>
-            <p>{docInfo.degree} - {docInfo.speciality}</p>
-            <button className='py-0.5 px-2 border text-xs rounded-full'>{docInfo.experience}</button>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-12">
+        {/* --- Doctor Details Card --- */}
+        <div className="bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-2xl shadow-2xl shadow-primary-300/40 p-6 flex flex-col md:flex-row items-center gap-6">
+          <div className="w-full md:w-1/3 flex justify-center">
+            <div className="relative p-1 group">
+              <img className='w-full max-w-[200px] md:max-w-full rounded-full object-cover aspect-square border-4 border-white/80 shadow-lg group-hover:scale-105 transition-transform duration-300' src={docInfo.image} alt={docInfo.name} />
+              <div className="absolute inset-0 rounded-full border-4 border-primary-400 animate-pulse"></div>
+            </div>
           </div>
 
-          {/*---doctor about---*/}
-          <div>
-            <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
-              About <img src={assets.info_icon} alt="" />
-            </p>
-            <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docInfo.about}</p>
-          </div>
-          <p className='text-gray-500 font-medium mt-4'>
-            Appointment fee: <span className='text-gray-600'>{currencySymbol}{docInfo.fees}</span>
-          </p>
-        </div>
-      </div>
-      {/* --Booking the slots---*/}
-      <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
-        <p>Booking Slots</p>
-        <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
-          {
-            docSlots.length && docSlots.map((item, index) => (
-              <div onClick={() => setSlotIndex(index)} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border-2 border-primary'}`} key={index}>
-                <p>{item[0] && dayOfWeek[item[0].datetime.getDay()]}</p>
-                <p>{item[0] && item[0].datetime.getDate()}</p>
+          <div className='flex-1 text-center md:text-left'>
+            <div className="flex items-center justify-center md:justify-start gap-2">
+              <h1 className='text-3xl md:text-4xl font-bold'>{docInfo.name}</h1>
+              <div className="relative w-8 h-8">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="11" fill="#42A5F5" stroke="white" strokeWidth="1"/>
+                  <path d="M8 12.3l2.7 2.7L16 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <rect x="0" y="0" width="24" height="24" rx="12" fill="url(#shine)" />
+                  <defs>
+                    <linearGradient id="shine" x1="-100%" y1="50%" x2="0%" y2="50%">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+                      <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                      <animate attributeName="x1" from="-100%" to="200%" dur="2s" repeatCount="indefinite" />
+                      <animate attributeName="x2" from="0%" to="300%" dur="2s" repeatCount="indefinite" />
+                    </linearGradient>
+                  </defs>
+                </svg>
               </div>
-            ))
-          }
-        </div>
-        <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
-          {docSlots.length && docSlots[slotIndex].map((item, index) => (
-            <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-primary text-white' : 'text-gray-400 border border-primary'}`} key={index}>
-              {item.time.toLowerCase()}
+            </div>
+            
+            <div className='flex flex-col md:flex-row items-center justify-center md:justify-start gap-x-4 gap-y-2 text-md mt-3 text-primary-200'>
+              <span className="flex items-center gap-2 text-white"><FaGraduationCap /> {docInfo.degree}</span>
+              <span className="flex items-center gap-2 text-white"><FaUserMd /> {docInfo.speciality}</span>
+              <span className="flex items-center gap-2 text-white"><FaBriefcaseMedical /> {docInfo.experience} years exp.</span>
+            </div>
+
+            <div className='mt-5'>
+              <h2 className='flex items-center justify-center md:justify-start gap-2 text-xl font-semibold text-white'>
+                <FaInfoCircle />
+                About
+              </h2>
+              <p className='text-sm text-gray-200 max-w-2xl mt-2 leading-relaxed'>{docInfo.about}</p>
+            </div>
+            
+            <p className='text-white font-semibold text-lg mt-5 flex items-center justify-center md:justify-start gap-2'>
+              <FaDollarSign className="text-green-300"/>
+              Appointment Fee: <span className='text-green-300 font-bold'>{currencySymbol}{docInfo.fees}</span>
             </p>
-          ))}
+          </div>
         </div>
 
-        <button onClick={bookAppointment} className='bg-primary text-white rounded-full px-16 py-3 my-10 text-sm cursor-pointer'>Book the Appointment</button>
+        {/* --- Booking Section --- */}
+        <div className='bg-white rounded-2xl shadow-xl p-6 md:p-8 mt-10'>
+          <h2 className='text-2xl font-bold text-gray-800 mb-6'>Book an Appointment</h2>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Select a Date</h3>
+            <div className='flex gap-4 items-center w-full overflow-x-auto pb-4'>
+              {docSlots.length > 0 ? docSlots.map((item, index) => (
+                item.length > 0 && (
+                  <div 
+                    onClick={() => setSlotIndex(index)} 
+                    className={`text-center py-4 px-5 min-w-[80px] rounded-xl cursor-pointer transition-all duration-300 border-2 ${slotIndex === index ? 'bg-primary-500 text-white border-primary-500 shadow-lg' : 'bg-gray-100 border-gray-200 hover:border-primary-100'}`} 
+                    key={index}
+                  >
+                    <p className="font-semibold text-sm">{item[0] && dayOfWeek[item[0].datetime.getDay()]}</p>
+                    <p className="font-bold text-2xl">{item[0] && item[0].datetime.getDate()}</p>
+                  </div>
+                )
+              )) : <p className="text-gray-500">Loading available dates...</p>}
+            </div>
+          </div>
 
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Select a Time Slot</h3>
+            <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4'>
+              {docSlots.length > 0 && docSlots[slotIndex].length > 0 ? docSlots[slotIndex].map((item, index) => (
+                <button 
+                  onClick={() => setSlotTime(item.time)} 
+                  className={`text-sm font-medium px-4 py-3 rounded-lg cursor-pointer transition-all duration-300 border ${item.time === slotTime ? 'bg-primary-500 text-white scale-105 shadow-md' : 'text-gray-700 bg-gray-100 border-gray-200 hover:border-primary-100'}`} 
+                  key={index}
+                >
+                  {item.time.toLowerCase()}
+                </button>
+              )) : <p className="text-gray-500 col-span-full">No available slots for this day. Please select another date.</p>}
+            </div>
+          </div>
+
+          <div className="mt-10 flex justify-end">
+            <button 
+              onClick={bookAppointment} 
+              className='bg-green-500 hover:bg-green-600 text-white font-bold rounded-full px-12 py-4 text-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed'
+              disabled={!slotTime}
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Listing the Related Doctors as a another component */}
-      <RelatedDoctors docId={docId} speciality={docInfo.speciality}></RelatedDoctors>
+      <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
     </div>
   )
 }

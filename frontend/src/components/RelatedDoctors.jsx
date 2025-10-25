@@ -23,19 +23,29 @@ const RelatedDoctors = ({docId,speciality}) => {
         <h1 className='text-3xl font-medium'>Explore Our Top Doctors</h1>
         <p className='sm:w-1/3 text-center text-sm'>Find your ideal doctor from our trusted network</p>
 
-        <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-6 sm:px:0'> 
+        <div className='w-full grid grid-cols-auto gap-8 pt-5 gap-y-6 px-6 sm:px:0'> 
             {relDoc.slice(0,5).map((item,index)=>(
                 
-                <div onClick={()=>{navigate(`/appointment/${item._id}`); scrollTo(0,0)}} key={index} className='border border-primary-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] duration-300'>
-                    <img className='bg-primary-200' src={item.image} alt="" />
-                    <div className='p-4'>
-<div className={`flex items-center gap-2 text-sm text-center ${ item.available ? "text-green-500" : "text-gray-500"}`}>
-                            <p className={`w-2 h-2 ${item.available ? 'bg-green-600' : 'bg-gray-500'} bg-green-600 rounded-full`}></p><p>{item.available ? "Available" : "Not Available"}</p>
+                <div
+                    onClick={()=>{navigate(`/appointment/${item._id}`);scrollTo(0,0)}}
+                    key={index}
+                    className='doc-card cursor-pointer transition-transform duration-300 hover:-translate-y-2'
+                  >
+                    <div className='doc-card-inner rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-white'>
+                        <div className='relative'>
+                            <img className='w-full h-60 bg-primary-200 object-cover object-center' src={item.image} alt={item.name} />
+                            <div className={`absolute bottom-1 right-4 flex items-center gap-2 text-sm px-3 py-1 rounded-full text-white ${item.available ? "bg-green-500" : "bg-gray-500"}`}>
+                                <p className={`w-2.5 h-2.5 ${item.available ? 'bg-white' : 'bg-gray-300'} rounded-full`}></p>
+                                <p>{item.available ? "Available" : "Unavailable"}</p>
+                            </div>
                         </div>
-                        <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
-                        <p className='text-gray-600 text-sm'>{item.speciality}</p>
+                        <div className='p-4'>
+                            <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
+                            <p className='text-gray-700 text-base'>{item.speciality}</p>
+                            <p className='text-gray-600 text-sm mt-2'>Experience: {item.experience || 'N/A'} years</p>
+                        </div>
                     </div>
-                </div> 
+                  </div>
 
             ))}
         </div>

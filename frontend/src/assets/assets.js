@@ -6,7 +6,7 @@ import header_img4 from './header_img4.jpg'
 // import group_profiles from './group_profiles.png'
 // import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
-import about_image from './about_image.png'
+import about_image from './about_image.jpg'
 import logo from './logo.png'
 import logo_small from './logo-small.png'
 import dropdown_icon from './dropdown_icon.svg'
@@ -17,6 +17,7 @@ import verified_icon from './verified_icon.svg'
 import arrow_icon from './arrow_icon.svg'
 import info_icon from './info_icon.svg'
 import upload_icon from './upload_icon.png'
+import medical_equipment from './medical-equipment.jpg'
 // import stripe_logo from './stripe_logo.png'
 // import razorpay_logo from './razorpay_logo.png'
 // import doc1 from './doc1.png'
@@ -43,6 +44,7 @@ import General_physician from './General_physician.jpg'
 import Gynecologist from './Gynecologist.jpg'
 import Neurologist from './Neurologist.jpg'
 import Pediatricians from './Pediatricians.jpg'
+import doctor_hero from './doctor-hero.jpg'
 
 
 export const assets = {
@@ -69,7 +71,9 @@ export const assets = {
     // razorpay_logo,
     user1,
     user2,
-    user3
+    user3,
+    medical_equipment,
+    doctor_hero
 }
 
 export const specialityData = [
@@ -100,4 +104,3 @@ export const specialityData = [
 ]
 
 
-   

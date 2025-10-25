@@ -10,7 +10,7 @@ const TopDoctors = () => {
     const {doctors} = useContext(AppContext)
     
     // Debug: Check if doctors data is loaded
-    console.log('Doctors data:', doctors)
+    // console.log('Doctors data:', doctors)
 
   return (
     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
@@ -29,7 +29,7 @@ const TopDoctors = () => {
                     className='doc-card cursor-pointer transition-transform duration-300 hover:-translate-y-2'
                 >
                     <div className='doc-card-inner rounded-2xl overflow-hidden'>
-                        <img className='w-full h-56 bg-primary-200 object-cover object-center' src={item.image} alt="" />
+                        <img className='w-full h-64 bg-primary-200 object-cover object-center' src={item.image} alt="" />
                         <div className='p-4'>
                             <div className={`flex items-center gap-2 text-sm text-center ${ item.available ? "text-green-500" : "text-gray-500"}`}>
                                 <p className={`w-2 h-2 ${item.available ? 'bg-green-600' : 'bg-gray-500'} bg-green-600 rounded-full`}></p><p>{item.available ? "Available" : "Not Available"}</p>
@@ -43,7 +43,7 @@ const TopDoctors = () => {
         </div>
         <button
             onClick={()=> {navigate('/doctors'); scrollTo(0,0)}}
-            className='btn-shine inline-flex items-center justify-center gap-2 rounded-full mt-10 px-10 py-3 text-sm sm:text-base font-semibold tracking-wide text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_10px_30px_rgba(124,58,237,0.35)] hover:shadow-[0_14px_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-purple-300'
+            className='btn-gradient-shine inline-flex items-center justify-center gap-2 rounded-full mt-10 px-10 py-3 text-sm sm:text-base font-semibold tracking-wide text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_10px_30px_rgba(124,58,237,0.35)] hover:shadow-[0_14px_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-purple-300'
         >
             More
         </button>

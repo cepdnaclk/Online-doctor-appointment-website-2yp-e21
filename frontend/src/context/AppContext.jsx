@@ -9,7 +9,7 @@ export const AppContext = createContext();
 
 const AppContextProvier = (props) =>{
 
-    const currencySymbol = 'Rs.'
+    const currencySymbol = 'LKR.'
     // Normalize backend URL (remove trailing slashes) to avoid invalid URLs like http://host:4000api/...
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])

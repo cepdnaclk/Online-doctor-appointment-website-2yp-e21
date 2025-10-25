@@ -63,7 +63,7 @@ const Header = () => {
     }, [typed, cycle])
 
   return (
-    <div className='relative w-full h-[65vh] md:h-[70vh] lg:h-[75vh] overflow-hidden my-5'>
+    <div className='relative w-full h-[65vh] md:h-[70vh] lg:h-[75vh] overflow-hidden my-6'>
         {/* Carousel CSS helpers based on provided reference */}
         <style>{`
             .carousel-container { perspective: 1000px; touch-action: pan-y pinch-zoom; }

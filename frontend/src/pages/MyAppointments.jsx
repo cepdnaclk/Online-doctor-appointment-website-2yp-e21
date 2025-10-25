@@ -92,37 +92,83 @@ const MyAppointments = () => {
   },[token, getUserAppointments])
 
   return (
-    <div>
-      <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>MyAppointments</p>
-      <div>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      {/* Hero section */}
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-zinc-300 bg-white p-6 sm:p-8 shadow-sm">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary-50/40 via-transparent to-primary-50/40" />
+        <div className="relative">
+          <h1 className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-primary-500 via-blue-400 to-blue-500 bg-clip-text text-transparent">
+            My Appointments
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-zinc-600">Review upcoming visits, pay online, or cancel when needed.</p>
+        </div>
+      </div>
+
+      {/* List */}
+      <div className="space-y-4">
         {appointments.map((item,index)=>(
-          <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b' key={index}>
-            <div>
-              <img className='w-32 bg-primary-200 rounded-full' src={item.docData.image} alt="" />
-            </div>
-            <div className='flex-1 text-sm text-zinc-600'>
-              <p className='text-neutral-800 font-semibold'>{item.docData.name}</p>
-              <p>{item.docData.speciality}</p>
-              <p className='text-zinc-700 font-medium mt-1'>Address:</p>
-              <p className='text-sm' >{item.docData.address.line1}</p>
-              <p className='text-xs'>{item.docData.address.line2}</p>
-              <p className='text-xs mt-1'><span className='text-sm text-neutral-700 font-medium'>Date & Time:</span>{slotDateFormat(item.slotDate)} | {item.slotTime}</p>
-            </div>
-            <div></div>
-            <div className='flex flex-col gap-2 justify-end'>
-              {!item.cancelled && !item.payment && !item.isCompleted && (
-                <button 
-                  onClick={() => handlePayment(item._id)}
-                  className={`text-sm text-center sm:min-w-48 py-2 border rounded transition-all duration-300 hover:bg-blue-500 hover:text-white cursor-pointer`}
-                  title="Pay Online"
-                >
-                  Pay Online
-                </button>
-              )}
-              {item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-800 rounded text-green-600'>Paid</button>}
-              {!item.cancelled && !item.payment && !item.isCompleted && <button onClick={()=>cancelAppointment(item._id)} className='text-sm text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transitin-all duration-300'>Cancel appointments</button>}
-              {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-800 rounded text-red-600'>Appointment Cancelled</button>}
-              {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button> }
+          <div
+            className="group rounded-2xl border border-zinc-200/70 bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow duration-300"
+            key={index}
+          >
+            <div className="grid grid-cols-[auto_1fr] sm:grid-cols-[auto_1fr_auto] gap-4 sm:gap-6 items-start">
+              {/* Avatar */}
+              <div className="shrink-0">
+                <img
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-2 ring-primary-100/60 bg-primary-50"
+                  src={item.docData.image}
+                  alt="Doctor"
+                />
+              </div>
+
+              {/* Info */}
+              <div className='flex-1 text-sm text-zinc-600'>
+                <p className='text-neutral-900 font-semibold text-base sm:text-lg'>{item.docData.name}</p>
+                <p className="text-primary-500 font-medium">{item.docData.speciality}</p>
+
+                <div className="mt-2 grid gap-1.5">
+                  <p className='text-xs mt-1'>
+                    <span className='text-sm text-neutral-700 font-medium'>Date &amp; Time: </span>
+                    {slotDateFormat(item.slotDate)} | {item.slotTime}
+                  </p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className='flex flex-col sm:items-end gap-2 justify-end'>
+                {!item.cancelled && !item.payment && !item.isCompleted && (
+                  <button 
+                    onClick={() => handlePayment(item._id)}
+                    className={`text-sm text-center sm:min-w-48 py-2 px-4 border rounded btn-gradient-shine transition-all duration-300 bg-gradient-to-r from-primary-200 to-primary-500 text-white hover:shadow-lg cursor-pointer`}
+                    title="Pay Online"
+                  >
+                    Pay Online
+                  </button>
+                )}
+                {item.payment && !item.isCompleted && (
+                  <button className='sm:min-w-48 py-2 px-4 border border-green-700/70 rounded text-green-700 bg-green-50'>
+                    Paid
+                  </button>
+                )}
+                {!item.cancelled && !item.payment && !item.isCompleted && (
+                  <button
+                    onClick={()=>cancelAppointment(item._id)}
+                    className='text-sm text-center sm:min-w-48 py-2 px-4 border rounded bg-red-50 text-red-700 border-red-600 hover:bg-red-600 hover:text-white transition-all duration-300'
+                  >
+                    Cancel appointments
+                  </button>
+                )}
+                {item.cancelled && !item.isCompleted && (
+                  <button className='sm:min-w-48 py-2 px-4 border border-red-700/70 rounded text-red-700 bg-red-50'>
+                    Appointment Cancelled
+                  </button>
+                )}
+                {item.isCompleted && (
+                  <button className='sm:min-w-48 py-2 px-4 border border-green-500 rounded text-green-600 bg-emerald-50'>
+                    Completed
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}

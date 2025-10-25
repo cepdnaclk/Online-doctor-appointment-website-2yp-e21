@@ -1,23 +1,23 @@
-import React from 'react'
-import Header from '../components/Header';
-import SpecialityMenu from '../components/SpecialityMenu';
-import TopDoctors from '../components/TopDoctors';
-import Banner from '../components/Banner';
-import OurServices from '../components/OurServices';
-import RelatedDoctors from '../components/RelatedDoctors';
+import React, { Suspense, lazy } from 'react';
+
+const Header = lazy(() => import('../components/Header'));
+const SpecialityMenu = lazy(() => import('../components/SpecialityMenu'));
+const TopDoctors = lazy(() => import('../components/TopDoctors'));
+const OurServices = lazy(() => import('../components/OurServices'));
+const Banner = lazy(() => import('../components/Banner'));
 
 const Home = () => {
   return (
     <>
-      <Header />
-
-      <SpecialityMenu />
-      <TopDoctors />
-      <OurServices />
-
-  <Banner />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+        <SpecialityMenu />
+        <TopDoctors />
+        <OurServices />
+        <Banner />
+      </Suspense>
     </>
-  )
-}
+  );
+};
 
 export default Home;
