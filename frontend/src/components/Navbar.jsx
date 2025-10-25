@@ -35,13 +35,19 @@ return (
     // Wrapper becomes fixed only after scrolling; at top it behaves like the old, full-width bar
     <div className={`${isScrolled ? 'fixed inset-x-0 top-0 z-50 flex justify-center' : ''}`}>
         <div
-            className={`flex justify-between items-center transition-all duration-200 ${
+            className={`flex justify-between items-center transition-all duration-300 ${
                 isScrolled
-                    ? 'pointer-events-auto mx-auto w-[94%] max-w-5xl bg-white/80 supports-[backdrop-filter]:bg-white/60 backdrop-blur rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] mt-3 px-6 py-2'
-                    : 'mx-4 sm:mx-[10%] py-4'
+                    ? 'pointer-events-auto mx-auto w-[94%] max-w-5xl bg-white/80 supports-[backdrop-filter]:bg-white/60 backdrop-blur rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] mt-1 px-5 py-8 overflow-visible'
+                    : 'mx-4 sm:mx-[10%] py-8 overflow-visible'
             }`}
         >
-            <Link to='/'><img src={assets.logo} alt="" className={`w-50 cursor-pointer transition-all duration-300 ${isScrolled ? 'w-40' : 'w-50'}`}/></Link>
+            <Link to='/'>
+                <img
+                    src={isScrolled ? assets.logo_small : assets.logo}
+                    alt=""
+                    className={`cursor-pointer object-contain transition-all duration-300 ${isScrolled ? 'h-8 scale-200 px-3' : 'h-9 scale-300'}`}
+                />
+            </Link>
             <ul className='hidden md:flex gap-8 items-center'>
                 <NavLink to='/' className='group'>
                     {({isActive}) => (

@@ -63,7 +63,7 @@ const Header = () => {
     }, [typed, cycle])
 
   return (
-    <div className='relative w-full h-[65vh] md:h-[70vh] lg:h-[75vh] overflow-hidden'>
+    <div className='relative w-full h-[65vh] md:h-[70vh] lg:h-[75vh] overflow-hidden my-2'>
         {/* Carousel CSS helpers based on provided reference */}
         <style>{`
             .carousel-container { perspective: 1000px; touch-action: pan-y pinch-zoom; }
@@ -132,7 +132,7 @@ const Header = () => {
                         <div key={idx} className={`carousel-item ${stateClass} absolute top-0 left-0 w-full h-full`}>
                             <img src={src} alt='' className='absolute inset-0 w-full h-full object-cover' />
                             {/* 70% black overlay for readability */}
-                            <div className='absolute inset-0 bg-black/70' />
+                            <div className='absolute inset-0 bg-black/60' />
                         </div>
                     )
                 })}
@@ -140,7 +140,7 @@ const Header = () => {
 
             {/* Text content overlay */}
             <div className='absolute inset-0 z-30 flex items-center'>
-                <div className='px-6 md:px-10 w-full md:max-w-[60%]'>
+                <div className='pl-10 pr-6 sm:pl-12 md:pl-16 md:pr-10 lg:pl-24 xl:pl-32 w-full md:max-w-[60%]'>
                     <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
                         <span className='whitespace-pre drop-shadow-[0_0_14px_rgba(255,255,255,0.65)]'>{typed}</span>
                         <span className='ml-1 inline-block w-2 h-6 md:h-8 lg:h-10 align-middle bg-white rounded-sm animate-pulse'></span>
@@ -148,7 +148,12 @@ const Header = () => {
                         <span className='text-2xl drop-shadow-[0_0_14px_rgba(216,0,255,0.65)]'>Book with Verified Healthcare Professionals</span>
                     </p>
                     <div className='flex items-center gap-3 text-white text-sm font-light mt-4'>
-                        <img className='w-24 md:w-28' src={assets.group_profiles} alt='' />
+                        <div className="flex -space-x-4 rtl:space-x-reverse">
+                            <img className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 object-cover" src={assets.user1} alt="" />
+                            <img className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 object-cover" src={assets.user2} alt="" />
+                            <img className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 object-cover" src={assets.user3} alt="" />
+                            <a className="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800" href="#">+99</a>
+                        </div>
                         <p className='drop-shadow-[0_0_10px_rgba(0,0,0,0.6)]'>Your path to better health starts here. <br/>Discover our expert doctors and easily book your visit.</p>
                     </div>
                     <a href='#speciality' className='relative inline-flex items-center bg-white px-8 py-3 rounded-full text-gray-700 text-sm mt-6 shadow-[0_0_22px_rgba(216,0,255,0.35)] hover:shadow-[0_0_38px_rgba(216,0,255,0.6)] ring-1 ring-white/40 hover:scale-105 transition-all duration-200 pointer-events-auto'>

@@ -14,8 +14,12 @@ const TopDoctors = () => {
 
   return (
     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
-        <h1 className='text-3xl font-medium'>Explore Our Top Doctors</h1>
-        <p className='sm:w-1/3 text-center text-sm'>Find your ideal doctor from our trusted network</p>
+        <h1 className='mb-2 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl text-center'>
+            Explore Our <mark className='px-2 text-white bg-primary-300 rounded-sm dark:bg-primary-200'>Top Doctors</mark>
+        </h1>
+        <p className='sm:w-2/5 text-center text-gray-500 text-base md:text-lg lg:text-l'>
+            Find your ideal doctor from our trusted network.
+        </p>
 
         <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-6 sm:px:0'> 
             {doctors.slice(0,10).map((item,index)=>(
