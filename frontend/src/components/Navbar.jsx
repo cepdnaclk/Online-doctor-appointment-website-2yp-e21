@@ -45,7 +45,7 @@ return (
                 <img
                     src={isScrolled ? assets.logo_small : assets.logo}
                     alt=""
-                    className={`cursor-pointer object-contain transition-all duration-300 ${isScrolled ? 'h-8 scale-200 px-3' : 'h-9 scale-300'}`}
+                    className={`cursor-pointer object-contain transition-all duration-300 ${isScrolled ? 'h-8 scale-200 px-3' : 'h-9 scale-320'}`}
                 />
             </Link>
             <ul className='hidden md:flex gap-8 items-center'>

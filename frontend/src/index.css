@@ -187,3 +187,66 @@
   .speciality-card-container:hover .speciality-card-image {
     transform: translateX(-50%) scale(1.1);
   }
+
+/* Top Doctors gradient border glow card (primary colors) */
+.doc-card{
+  --doc-gradient: linear-gradient(135deg, #AC3BD5 0%, #D483F1 45%, #77179A 100%);
+  position: relative;
+  z-index: 0;
+  padding: 0;              /* no border by default */
+  border-radius: 1rem;     /* ~rounded-2xl */
+  background: transparent; /* gradient appears only on hover */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: visible;       /* allow glow */
+  transition: padding .25s ease, box-shadow .3s ease;
+}
+
+.doc-card::after{
+  content: "";
+  position: absolute;
+  inset: 0;                /* full size */
+  border-radius: 1rem;
+  filter: blur(22px);
+  background: var(--doc-gradient);
+  z-index: -1;
+  opacity: 0;              /* glow only on hover */
+  transition: opacity .35s ease;
+}
+
+.doc-card:hover{
+  padding: 2px;            /* reveal gradient border */
+  background: var(--doc-gradient);
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+.doc-card:hover::after{ opacity: 1; }
+
+.doc-card-inner{
+  background: #ffffff;  /* inner surface */
+  border-radius: calc(1rem - 2px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba(124,58,237,0.15); /* subtle border when not active */
+}
+
+/* Shiny gradient button for Banner CTA */
+.btn-shine{
+  position: relative;
+  isolation: isolate;
+}
+.btn-shine::after{
+  content: "";
+  position: absolute;
+  inset: -100% -30%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.55) 20%, rgba(255,255,255,0.0) 40%);
+  transform: translateX(-60%) skewX(-20deg);
+  filter: blur(2px);
+  animation: btnShimmer 2.2s infinite;
+  pointer-events: none;
+  z-index: -1; /* behind the button content */
+}
+@keyframes btnShimmer{
+  0%{ transform: translateX(-60%) skewX(-20deg); }
+  100%{ transform: translateX(120%) skewX(-20deg); }
+}

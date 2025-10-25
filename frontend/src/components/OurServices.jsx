@@ -1,5 +1,6 @@
 import React from 'react';
-import { assets } from '../assets/assets';
+// other assets not required here; import only the sticky background image
+import servicesBg from '../assets/background-img-services.png';
 
 const servicesData = [
     { title: "🦷 Dental Surgery", description: "Our advanced dental unit provides a full spectrum of oral healthcare, from routine check-ups and cleanings to complex surgical procedures. We specialize in dental implants, wisdom tooth removal, and cosmetic dentistry, all in a comfortable and modern environment." },
@@ -16,23 +17,28 @@ const servicesData = [
 const OurServices = () => {
 
     return (
-        <div
-            className='our-services-container bg-cover bg-fixed bg-center relative py-20'
-            style={{ backgroundImage: `url(${assets.services_bg})` }}
-        >
-            <div className='absolute inset-0 bg-black opacity-50'></div>
-            <div className='relative z-10 container mx-auto px-4 text-white'>
+        <section className='relative'>
+            {/* Sticky background layer */}
+            <div
+                className='sticky top-0 h-[70vh] bg-cover bg-center -z-10'
+                style={{ backgroundImage: `url(${servicesBg})` }}
+            >
+                <div className='absolute inset-0 bg-black opacity-60'></div>
+            </div>
+
+            {/* Content overlay (same as before) */}
+            <div className='relative z-10 container mx-auto px-4 text-white py-10'>
                 <h2 className='text-4xl font-bold text-center mb-12'>Our Services</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                     {servicesData.map((service, index) => (
-                        <div key={index} className='bg-gray-800 bg-opacity-70 p-6 rounded-lg shadow-lg backdrop-blur-sm'>
+                        <div key={index} className='bg-primary-800 bg-opacity-70 p-6 rounded-lg shadow-lg backdrop-blur-sm'>
                             <h3 className='text-2xl font-semibold mb-3'>{service.title}</h3>
-                            <p className='text-gray-300'>{service.description}</p>
+                            <p className='text-gray-200'>{service.description}</p>
                         </div>
                     ))}
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

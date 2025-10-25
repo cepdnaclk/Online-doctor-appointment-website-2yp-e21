@@ -23,18 +23,22 @@ const TopDoctors = () => {
 
         <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-6 sm:px:0'> 
             {doctors.slice(0,10).map((item,index)=>(
-                
-                <div onClick={()=>{navigate(`/appointment/${item._id}`);scrollTo(0,0)}} key={index} className='border border-primary-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] duration-300'>
-                    <img className='bg-primary-200' src={item.image} alt="" />
-                    <div className='p-4'>
-                        <div className={`flex items-center gap-2 text-sm text-center ${ item.available ? "text-green-500" : "text-gray-500"}`}>
-                            <p className={`w-2 h-2 ${item.available ? 'bg-green-600' : 'bg-gray-500'} bg-green-600 rounded-full`}></p><p>{item.available ? "Available" : "Not Available"}</p>
+                <div
+                    onClick={()=>{navigate(`/appointment/${item._id}`);scrollTo(0,0)}}
+                    key={index}
+                    className='doc-card cursor-pointer transition-transform duration-300 hover:-translate-y-2'
+                >
+                    <div className='doc-card-inner rounded-2xl overflow-hidden'>
+                        <img className='w-full h-70 bg-primary-200 object-cover object-center' src={item.image} alt="" />
+                        <div className='p-4'>
+                            <div className={`flex items-center gap-2 text-sm text-center ${ item.available ? "text-green-500" : "text-gray-500"}`}>
+                                <p className={`w-2 h-2 ${item.available ? 'bg-green-600' : 'bg-gray-500'} bg-green-600 rounded-full`}></p><p>{item.available ? "Available" : "Not Available"}</p>
+                            </div>
+                            <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
+                            <p className='text-gray-700 text-base'>{item.speciality}</p>
                         </div>
-                        <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
-                        <p className='text-gray-700 text-base'>{item.speciality}</p>
                     </div>
-                </div> 
-
+                </div>
             ))}
         </div>
         <button onClick={()=> {navigate('/doctors'); scrollTo(0,0)}} className='bg-primary-50 text-gray-700 px-12 py-3 rounded-full mt-10 cursor-pointer'>more</button>
