@@ -8,7 +8,7 @@ const Footer = () => {
             {/*---left side section --*/}
             <div className='flex flex-col items-center'>
                 <img className='mb-2 w-50' src={assets.logo} alt="" />
-                <p className='w-full md:w-2/3 text-gray-600 leading-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos ab, rem autem ipsum commodi numquam ipsa suscipit velit id accusamus optio quisquam nam doloremque laborum et quam facere officia temporibus.</p>
+                <p className='w-full md:w-2/3 text-gray-600 leading-6'>MediBook Pro is your trusted partner in health management, offering seamless appointment scheduling, secure access to medical records, and personalized health insights. We connect patients with top-tier healthcare professionals, making wellness accessible and efficient. Experience a new era of healthcare convenience with MediBook Pro</p>
             </div>
 
             {/*---middle side section --*/}
