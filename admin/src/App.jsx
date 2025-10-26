@@ -16,6 +16,7 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard.jsx';
 import { DoctorContext } from './context/DoctorContext.jsx';
 import DoctorAppointments from './pages/Doctor/DoctorAppointments.jsx';
 import DoctorProfile from './pages/Doctor/DoctorProfile.jsx';
+import Landing from './pages/Landing.jsx';
 
 const App = () => {
   const {aToken} = useContext(AdminContext)
@@ -28,7 +29,7 @@ const App = () => {
         <Sidebar/>
         <Routes>
           {/* Admin Route */}
-          <Route path='/' element={<></>}/>
+          <Route path='/' element={<Landing/>}/>
           <Route path='/admin-dashboard' element={<Dashboard/>}></Route>
           <Route path='/all-appointments' element={<AllAppointments/>}></Route>
           <Route path='/add-doctor' element={<AddDoctor/>}></Route>

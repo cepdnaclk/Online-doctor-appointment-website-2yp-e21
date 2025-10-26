@@ -206,10 +206,13 @@ const adminDashboard = async (req,res) => {
         const appoinments = await appointmentModel.find({})
 
         const dashData = {
-            doctors:doctors.length,
-            appoinments:appoinments.length,
-            patients:users.length,
-            latestAppointments:appoinments.reverse().slice(0,5)
+            doctors: doctors.length,
+            // Keep the misspelled key for backward compatibility, but also provide the correct one
+            appoinments: appoinments.length,
+            appointments: appoinments.length,
+            patients: users.length,
+            // Return up to the latest 10 appointments instead of 5
+            latestAppointments: appoinments.reverse().slice(0, 10)
         }
         res.json({success:true , dashData})
 

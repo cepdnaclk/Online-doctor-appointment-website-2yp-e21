@@ -12,6 +12,16 @@ import appointments_icon from './appointments_icon.svg'
 import earning_icon from './earning_icon.svg'
 import patients_icon from './patients_icon.svg'
 
+// Landing carousel images (ensure these files exist in this folder)
+// If your files are named differently, update these imports accordingly.
+import admin1 from './admin1.jpg'
+import admin2 from './admin2.jpg'
+import admin3 from './admin3.jpg'
+import admin4 from './admin4.jpg'
+import admin_dash from './admin-dash.jpg'
+import admin_login from './admin-login.jpg'
+import doc_login from './doc-login.jpg'
+
 export default {
     add_icon,
     admin_logo,
@@ -25,5 +35,14 @@ export default {
     list_icon,
     tick_icon,
     appointments_icon,
-    earning_icon
+    earning_icon,
+    admin1,
+    admin2,
+    admin3,
+    admin4,
+    admin_dash,
+    admin_login,
+    doc_login,
+    // Use admin_logo as admin_badge icon fallback
+    admin_badge: admin_logo
 }

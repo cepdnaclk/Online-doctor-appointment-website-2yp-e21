@@ -79,9 +79,13 @@ return (
             <div className='hidden md:flex items-center gap-4 '>{
                 // show logged-in UI as soon as we have a token to avoid flicker; use placeholder avatar until userData loads
                 token
-                ? <div className='flex items-center gap-2 cursor-pointer group relative select-none'> 
-                        <img className='w-8 h-8 rounded-full ring-2 ring-purple-400/50 group-hover:ring-pink-500/70 shadow-[0_0_15px_rgba(216,0,255,0.25)] transition-all duration-300' src={(userData && userData.image) ? userData.image : assets.profile_pic} alt='' />
-                        <img className='w-2-5 transition-transform duration-300 group-hover:rotate-180 drop-shadow-[0_0_8px_rgba(216,0,255,0.45)]' src={assets.dropdown_icon} alt="" />
+        ? <div className='flex items-center gap-2 cursor-pointer group relative select-none'> 
+            <img
+                className='w-10 h-10 md:w-10 md:h-10 rounded-full object-cover shrink-0 ring-2 ring-purple-400/50 group-hover:ring-pink-500/70 shadow-[0_0_15px_rgba(216,0,255,0.25)] transition-all duration-300'
+                src={(userData && userData.image) ? userData.image : assets.profile_pic}
+                alt='User avatar'
+            />
+            <img className='w-3 h-3 shrink-0 transition-transform duration-300 group-hover:rotate-180 drop-shadow-[0_0_8px_rgba(216,0,255,0.45)]' src={assets.dropdown_icon} alt="Open menu" />
 
                         <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-700 z-50 hidden group-hover:block'>
                             <div className='min-w-52 bg-white/90 supports-[backdrop-filter]:bg-white/70 backdrop-blur rounded-xl border border-white/30 shadow-[0_20px_40px_rgba(0,0,0,0.12)] flex flex-col gap-2 p-4'>
@@ -118,7 +122,7 @@ return (
                     <div className='px-5 py-4'>
                         {token ? (
                             <div className='flex items-center gap-3'>
-                                <img className='w-10 h-10 rounded-full ring-2 ring-purple-400/50 shadow-[0_0_12px_rgba(216,0,255,0.25)]' src={(userData && userData.image) ? userData.image : assets.profile_pic} alt='' />
+                                <img className='w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-purple-400/50 shadow-[0_0_12px_rgba(216,0,255,0.25)]' src={(userData && userData.image) ? userData.image : assets.profile_pic} alt='User avatar' />
                                 <div className='text-sm text-gray-700'>
                                     <p className='font-medium'>Welcome</p>
                                     <div className='flex gap-3 mt-2'>

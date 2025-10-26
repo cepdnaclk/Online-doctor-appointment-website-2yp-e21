@@ -1,5 +1,6 @@
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import { v2 as cloudinary } from 'cloudinary'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -89,7 +90,8 @@ const doctorDashboard = async (req,res) => {
             earnings,
             appointments: appointments.length,
             patients: patients.length,
-            latestAppointments: appointments.reverse().slice(0,5)
+            // Return up to the latest 10 appointments instead of 5
+            latestAppointments: appointments.reverse().slice(0,10)
         }
         
         res.json({success:true, dashData})
@@ -156,15 +158,25 @@ const updateDoctorProfile = async (req, res) => {
  const docId = req.docId; 
 
  // 2. Get all the fields you sent from the frontend
- const { fees, address, available, about } = req.body;
+ let { fees, address, available, about } = req.body;
+ // address may come as JSON string from multipart form
+ if (typeof address === 'string') {
+     try { address = JSON.parse(address) } catch { /* keep as is */ }
+ }
+ // available may come as string 'true'/'false'
+ if (typeof available === 'string') { available = available === 'true' }
 
  // 3. Update the doctor using all the fields
- await doctorModel.findByIdAndUpdate(docId, { 
- fees, 
- address, 
- available, 
- about // <-- Added the 'about' field here
- })
+ const update = { fees, address, available, about }
+
+ // 4. Optional image upload
+ const imageFile = req.file
+ if (imageFile) {
+     const uploadRes = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
+     update.image = uploadRes.secure_url
+ }
+
+ await doctorModel.findByIdAndUpdate(docId, update)
  
  res.json({ success: true, message: 'Profile Updated' })
 
