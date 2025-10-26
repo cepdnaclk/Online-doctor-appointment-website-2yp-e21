@@ -13,10 +13,13 @@ const AppContextProvier = (props) =>{
     // Normalize backend URL (remove trailing slashes) to avoid invalid URLs like http://host:4000api/...
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
+<<<<<<< HEAD
     
     //when refreshing the page if you have token it should be get as 1st state 
     const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
 
+=======
+>>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
 
     const getDoctorsData = async ()=>{
         try{
@@ -31,7 +34,11 @@ const AppContextProvier = (props) =>{
             toast.error(error.message)
         }
     }
+<<<<<<< HEAD
     const value = {doctors ,currencySymbol,getDoctorsData,token,setToken,backendUrl}
+=======
+    const value = {doctors ,currencySymbol,getDoctorsData}
+>>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
 
     useEffect(()=>{
         getDoctorsData()

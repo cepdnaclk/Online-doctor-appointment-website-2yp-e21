@@ -8,6 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false);
+<<<<<<< HEAD
     // const [token, setToken] = useState(true); - used temorary to develop the frontend
     const {token,setToken} = useContext(AppContext)
 
@@ -16,6 +17,10 @@ const Navbar = () => {
         localStorage.removeItem('token')
     }
 
+=======
+    const [token, setToken] = useState(true);
+    
+>>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
 
 return (
     // this is the navigation bar
