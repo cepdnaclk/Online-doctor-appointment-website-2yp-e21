@@ -10,17 +10,23 @@ const Doctors = () => {
   const [filterDoc, setFilterDoc] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const { doctors } = useContext(AppContext);
+  // normalize current speciality from URL (handle spaces/case)
+  const activeSpec = speciality ? decodeURIComponent(speciality) : '';
 
   useEffect(() => {
     const applyFilter = () => {
-      if (speciality) {
-        setFilterDoc(doctors.filter(doc => doc.speciality === speciality));
+      if (activeSpec) {
+        setFilterDoc(
+          doctors.filter(
+            (doc) => (doc.speciality || '').toLowerCase() === activeSpec.toLowerCase()
+          )
+        );
       } else {
         setFilterDoc(doctors);
       }
     };
     applyFilter();
-  }, [doctors, speciality]);
+  }, [doctors, activeSpec]);
 
   const specialities = [
     'General physician',
@@ -63,15 +69,18 @@ const Doctors = () => {
                 >
                   All
                 </p>
-                {specialities.map((spec, index) => (
-                  <p 
-                    key={index}
-                    onClick={() => speciality === spec ? navigate('/doctors') : navigate(`/doctors/${spec}`)} 
-                    className={`cursor-pointer p-3 rounded-md transition-all border-2 border-transparent hover:border-primary-500 ${speciality === spec ? "bg-primary-500 text-white font-semibold" : ""}`}
-                  >
-                    {spec}
-                  </p>
-                ))}
+                {specialities.map((spec, index) => {
+                  const isActive = activeSpec.toLowerCase() === spec.toLowerCase();
+                  return (
+                    <p
+                      key={index}
+                      onClick={() => navigate(`/doctors/${encodeURIComponent(spec)}`)}
+                      className={`cursor-pointer p-3 rounded-md transition-all border-2 border-transparent hover:border-primary-500 ${isActive ? "bg-primary-500 text-white font-semibold" : ""}`}
+                    >
+                      {spec}
+                    </p>
+                  );
+                })}
               </div>
             </div>
           </div>
