@@ -28,6 +28,12 @@ const registerUser = async (req, res) => {
             return res.json({ success: false, message: "Enter a strong email" })
         }
 
+        // prevent duplicate registrations by email
+        const existing = await userModel.findOne({ email })
+        if (existing) {
+            return res.status(409).json({ success: false, message: "Email already registered. Please log in." })
+        }
+
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -45,7 +51,11 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        // handle duplicate key error from MongoDB unique index
+        if (error && (error.code === 11000 || error.name === 'MongoServerError')) {
+            return res.status(409).json({ success: false, message: "Email already registered. Please log in." })
+        }
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
