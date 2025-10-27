@@ -1,6 +1,5 @@
-import { createContext,useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 // import { doctors } from "../assets/assets";
-import { useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-toastify'
 
@@ -13,23 +12,16 @@ const AppContextProvier = (props) =>{
     // Normalize backend URL (remove trailing slashes) to avoid invalid URLs like http://host:4000api/...
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/main
-    
-    //when refreshing the page if you have token it should be get as 1st state 
-    const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
->>>>>>> origin/main
+    //when refreshing the page if you have token it should be get as 1st state 
+    const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : false)
+
+    // user profile state
+    const [userData, setUserData] = useState(false)
 
     const getDoctorsData = async ()=>{
         try{
-            const {data} = await axios.get(backendUrl+'/api/doctor/list')
+            const {data} = await axios.get(backendUrl + '/api/doctor/list')
             if (data.success){
                 setDoctors(data.doctors)
             }else{
@@ -40,19 +32,38 @@ const AppContextProvier = (props) =>{
             toast.error(error.message)
         }
     }
-<<<<<<< HEAD
-    const value = {doctors ,currencySymbol,getDoctorsData,token,setToken,backendUrl}
-=======
-<<<<<<< HEAD
-    const value = {doctors ,currencySymbol,getDoctorsData,token,setToken,backendUrl}
-=======
-    const value = {doctors ,currencySymbol,getDoctorsData}
->>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
->>>>>>> origin/main
+
+    // load current user's profile when token is available
+    const loadUserProfileData = async () => {
+        try {
+            const { data } = await axios.get(backendUrl + '/api/user/get-profile', {
+                headers: { token }
+            })
+            if (data.success) {
+                setUserData(data.userData)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
+    const value = {doctors, currencySymbol, getDoctorsData, token, setToken, backendUrl, userData, setUserData, loadUserProfileData}
 
     useEffect(()=>{
         getDoctorsData()
     },[]) // to run the api in the start of the page
+
+    // refetch profile whenever token changes
+    useEffect(()=>{
+        if (token){
+            loadUserProfileData()
+        } else {
+            setUserData(false)
+        }
+    },[token])
 
     return(
         <AppContext.Provider value={value}>
@@ -63,9 +74,8 @@ const AppContextProvier = (props) =>{
 export default AppContextProvier;
 
 
+
 // import { AppContext } from "./AppContextContext";
-
-
 
 /* 
 සරලවම කිව්වොත්:
@@ -78,3 +88,4 @@ AppContextProvier කියලා component එකක් හැදුවා.
 (props.children) මම දෙන doctors data එක (value) ලබාගන්න ඉඩ දෙන්න" කියලා.
 
 */
+
