@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -57,7 +59,7 @@ return (
                             <div className='min-w-48 bg-stone-200 rounded flex flex-col gap-4 p-4'>
                                 <p onClick ={()=> navigate('my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
                                 <p onClick ={()=> navigate('my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
-                                <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+                                <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
                             </div>
                         
                         </div>
