@@ -1,23 +1,23 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false);
-
-    // const [token, setToken] = useState(true); - used temporary to develop the frontend
-    const { token, setToken, userData } = useContext(AppContext)
+    // const [token, setToken] = useState(true); - used temorary to develop the frontend
+    const {token,setToken,userData} = useContext(AppContext)
 
     const logout = ()=>{
         setToken(false)
         localStorage.removeItem('token')
-        navigate('/login')
     }
 
-    return (
+
+return (
     // this is the navigation bar
     <div className='flex  justify-between items-center py-1'>
             <Link to='/'><img src={assets.logo} alt="" className='w-50 cursor-pointer'/></Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
             </ul>
             <div className='flex items-center gap-4 '>{
                 // to visible the dropdown menu of the login user
-                    token && userData 
+                token && userData
                 ? <div className='flex items-center gap-2 cursor-pointer group relative'> 
                         <img className='w-8 rounded-full' src={userData.image} alt=''/>
                         <img className='w-2-5' src={assets.dropdown_icon} alt="" />

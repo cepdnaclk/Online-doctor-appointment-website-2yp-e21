@@ -4,19 +4,23 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import RelatedDoctors from '../components/RelatedDoctors'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+
 
 const Appointment = () => {
 
-  const {docId} = useParams()
-  const {doctors, currencySymbol} = useContext(AppContext)
-  const dayOfWeek = ['SUN','MON','TUE','WED','THU','FRI','SAT']
+  const { docId } = useParams()
+  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } = useContext(AppContext)
+  const dayOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
   const [docInfo, setDocInfo] = useState(null) // eslint-disable-line no-unused-vars
   const [docSlots, setDocSlots] = useState([])
   const [slotIndex, setSlotIndex] = useState(0) // times for the 
 
-  
+
   const [slotTime, setSlotTime] = useState('')
- 
+  const navigate = useNavigate()
+
   const fetchDocInfo = async () => {
     const foundDoc = doctors.find(doc => doc._id === docId)
     setDocInfo(foundDoc)

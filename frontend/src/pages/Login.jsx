@@ -1,12 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
+import { useContext } from 'react'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Login = () => {
 
-  const { backendUrl, token, setToken } = useContext(AppContext)
+  const {backendUrl, token, setToken} = useContext(AppContext)
   const [state,setState] = useState('Sign Up')
   const [email,setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,16 +22,15 @@ const Login = () => {
     try {
       // try to sign up
       if(state==='Sign Up'){
-        const {data} = await axios.post(backendUrl + '/api/user/register',{name,password,email})
+        const {data} = await axios.post(backendUrl+'/api/user/register',{name,password,email})
         if(data.success){
           localStorage.setItem('token',data.token)
-          setToken(data.token)
         }
         else{
           toast.error(data.message)
         }
       }else{ // otherwise log in
-        const {data} = await axios.post(backendUrl + '/api/user/login', {password,email})
+        const {data} = await axios.post(backendUrl+'/api/user/login', {password,email})
         if(data.success){
           localStorage.setItem('token',data.token)
           setToken(data.token)
@@ -47,6 +48,7 @@ const Login = () => {
       navigate('/')
     }
   },[token])
+
   return (
       <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
         <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-100 sm:min-h-96 border rounded-xl text-white text-sm shadow-lg bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 hover:shadow-[0_0_30px_rgba(176,24,231,0.5)] transition-all duration-250'>

@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext,useEffect } from "react";
 // import { doctors } from "../assets/assets";
+import { useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-toastify'
 
@@ -12,16 +13,17 @@ const AppContextProvier = (props) =>{
     // Normalize backend URL (remove trailing slashes) to avoid invalid URLs like http://host:4000api/...
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
-
+    
     //when refreshing the page if you have token it should be get as 1st state 
-    const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : false)
-
+    const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
+    
     // user profile state
     const [userData, setUserData] = useState(false)
 
+
     const getDoctorsData = async ()=>{
         try{
-            const {data} = await axios.get(backendUrl + '/api/doctor/list')
+            const {data} = await axios.get(backendUrl+'/api/doctor/list')
             if (data.success){
                 setDoctors(data.doctors)
             }else{
@@ -32,7 +34,7 @@ const AppContextProvier = (props) =>{
             toast.error(error.message)
         }
     }
-
+    
     // load current user's profile when token is available
     const loadUserProfileData = async () => {
         try {
@@ -50,7 +52,7 @@ const AppContextProvier = (props) =>{
         }
     }
 
-    const value = {doctors, currencySymbol, getDoctorsData, token, setToken, backendUrl, userData, setUserData, loadUserProfileData}
+    const value = {doctors ,currencySymbol,getDoctorsData,token,setToken,backendUrl, userData, setUserData, loadUserProfileData}
 
     useEffect(()=>{
         getDoctorsData()
