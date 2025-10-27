@@ -66,7 +66,8 @@ const addDoctor = async (req, res) => {
             about,
             fees: feesNum,
             address: addressObj,
-            date:Date.now()
+            date:Date.now(),
+            slots_booked: {} // not sure nessaasry
         }
 
         const newDoctor = new doctorModel(doctorData)

@@ -1,34 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/main
-    // const [token, setToken] = useState(true); - used temorary to develop the frontend
-    const {token,setToken} = useContext(AppContext)
+
+    // const [token, setToken] = useState(true); - used temporary to develop the frontend
+    const { token, setToken, userData } = useContext(AppContext)
 
     const logout = ()=>{
         setToken(false)
         localStorage.removeItem('token')
+        navigate('/login')
     }
 
-<<<<<<< HEAD
-=======
-=======
-    const [token, setToken] = useState(true);
-    
->>>>>>> 6071b35f4e03857e9e7c8a2c94841bbfdd101362
->>>>>>> origin/main
-
-return (
+    return (
     // this is the navigation bar
     <div className='flex  justify-between items-center py-1'>
             <Link to='/'><img src={assets.logo} alt="" className='w-50 cursor-pointer'/></Link>
@@ -66,11 +55,12 @@ return (
                     )}
                 </NavLink>
             </ul>
-            <div class='flex items-center gap-4 '>{
+            <div className='flex items-center gap-4 '>{
                 // to visible the dropdown menu of the login user
-                token ? <div className='flex items-center gap-2 cursor-pointer group relative'> 
-                        <img class='w-8 rounded-full' src={assets.profile_pic} alt=''/>
-                        <img class='w-2-5' src={assets.dropdown_icon} alt="" />
+                    token && userData 
+                ? <div className='flex items-center gap-2 cursor-pointer group relative'> 
+                        <img className='w-8 rounded-full' src={userData.image} alt=''/>
+                        <img className='w-2-5' src={assets.dropdown_icon} alt="" />
 
                         <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
                             <div className='min-w-48 bg-stone-200 rounded flex flex-col gap-4 p-4'>
@@ -81,7 +71,7 @@ return (
                         
                         </div>
                 </div>
-                :<button onClick = {()=>navigate('/login')} class='border border-primary text-primary py-2 px-6 rounded-full hover:bg-primary hover:text-white transition-all duration-20 md:block'>Create account</button>
+                :<button onClick = {()=>navigate('/login')} className='border border-primary text-primary py-2 px-6 rounded-full hover:bg-primary hover:text-white transition-all duration-20 md:block'>Create account</button>
 }
             <img onClick={()=> setShowMenu(true)} src={assets.menu_icon} alt="" className='w-6 md:hidden' />
             {/* ----Mobile menu----*/}
