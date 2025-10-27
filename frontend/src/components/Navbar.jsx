@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
+import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
@@ -14,21 +13,6 @@ const Navbar = () => {
         setToken(false)
         localStorage.removeItem('token')
     }
-
-    // Prevent background scrolling when mobile menu is open
-    useEffect(() => {
-        if (showMenu) {
-            document.body.style.overflow = 'hidden'
-            document.body.style.touchAction = 'none'
-        } else {
-            document.body.style.overflow = ''
-            document.body.style.touchAction = ''
-        }
-        return () => {
-            document.body.style.overflow = ''
-            document.body.style.touchAction = ''
-        }
-    }, [showMenu])
 
 return (
     <div className='fixed inset-x-0 top-0 z-50'>
@@ -120,85 +104,76 @@ return (
 }
             </div>
             <img onClick={()=> setShowMenu(true)} src={assets.menu_icon} alt="" className='w-6 md:hidden' />
+            {/* ----Mobile menu (overlay + sliding panel)----*/}
+            <div className={`fixed inset-0 z-50 md:hidden ${showMenu ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+                {/* Backdrop */}
+                <div
+                    onClick={()=> setShowMenu(false)}
+                    className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${showMenu ? 'opacity-100' : 'opacity-0'}`}
+                />
+                {/* Panel */}
+                <div className={`absolute right-0 top-0 h-full w-[82%] max-w-[22rem] bg-white/85 supports-[backdrop-filter]:bg-white/65 backdrop-blur-xl border-l border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-transform duration-500 ${showMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+                    <div className='flex items-center justify-between px-5 py-5 border-b border-white/30'>
+                        <img className='w-32' src={assets.logo} alt='' />
+                        <img className='w-7 active:scale-95 transition' onClick={()=> setShowMenu(false)} src={assets.cross_icon} alt='' />
+                    </div>
 
-            {/* Render mobile overlay + panel into document.body so it sits above all page content */}
-            {createPortal(
-                <div className={`fixed inset-0 md:hidden pointer-events-auto`} aria-hidden={!showMenu}>
-                    {/* Backdrop */}
-                    <div
-                        onClick={() => setShowMenu(false)}
-                        className={`fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${showMenu ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                        style={{zIndex: 60}}
-                    />
-
-                    {/* Sliding panel */}
-                    <div
-                        className={`fixed right-0 top-0 h-full w-[82%] max-w-[22rem] bg-white/95 supports-[backdrop-filter]:bg-white/85 backdrop-blur-xl border-l border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-transform duration-500 ${showMenu ? 'translate-x-0' : 'translate-x-full'}`}
-                        style={{zIndex: 70}}
-                    >
-                        <div className='flex items-center justify-between px-5 py-5 border-b border-white/30'>
-                            <img className='w-32' src={assets.logo} alt='' />
-                            <img className='w-7 active:scale-95 transition' onClick={()=> setShowMenu(false)} src={assets.cross_icon} alt='' />
-                        </div>
-
-                        {/* User quick section */}
-                        <div className='px-5 py-4'>
-                            {token ? (
-                                <div className='flex items-center gap-3'>
-                                    <img className='w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-purple-400/50 shadow-[0_0_12px_rgba(216,0,255,0.25)]' src={(userData && userData.image) ? userData.image : assets.profile_pic} alt='User avatar' />
-                                    <div className='text-sm text-gray-700'>
-                                        <p className='font-medium'>Welcome</p>
-                                        <div className='flex gap-3 mt-2'>
-                                            <button onClick={()=> {setShowMenu(false); navigate('my-profile')}} className='text-xs px-3 py-1 rounded-full bg-white/60 border border-white/30 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 transition'>Profile</button>
-                                            <button onClick={()=> {setShowMenu(false); navigate('my-appointments')}} className='text-xs px-3 py-1 rounded-full bg-white/60 border border-white/30 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 transition'>Appointments</button>
-                                        </div>
+                    {/* User quick section */}
+                    <div className='px-5 py-4'>
+                        {token ? (
+                            <div className='flex items-center gap-3'>
+                                <img className='w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-purple-400/50 shadow-[0_0_12px_rgba(216,0,255,0.25)]' src={(userData && userData.image) ? userData.image : assets.profile_pic} alt='User avatar' />
+                                <div className='text-sm text-gray-700'>
+                                    <p className='font-medium'>Welcome</p>
+                                    <div className='flex gap-3 mt-2'>
+                                        <button onClick={()=> {setShowMenu(false); navigate('my-profile')}} className='text-xs px-3 py-1 rounded-full bg-white/60 border border-white/30 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 transition'>Profile</button>
+                                        <button onClick={()=> {setShowMenu(false); navigate('my-appointments')}} className='text-xs px-3 py-1 rounded-full bg-white/60 border border-white/30 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 transition'>Appointments</button>
                                     </div>
                                 </div>
-                            ) : (
-                                <NavLink
-                                    to='/login'
-                                    onClick={()=> setShowMenu(false)}
-                                    className='inline-block w-full text-center mt-1 rounded-full px-5 py-2.5 font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_0_18px_rgba(216,0,255,0.35)] hover:shadow-[0_0_30px_rgba(216,0,255,0.55)] transition-all duration-300 hover:scale-[1.02]'
-                                >
-                                    Create account
-                                </NavLink>
-                            )}
-                        </div>
-
-                        <div className='h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent mx-5' />
-
-                        <ul className='flex flex-col gap-1 mt-4 px-5 text-lg font-medium'>
-                            <NavLink onClick={()=> setShowMenu(false)} to='/' className='block'>
-                                {({isActive}) => (
-                                    <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>HOME</p>
-                                )}
-                            </NavLink>
-                            <NavLink onClick={()=> setShowMenu(false)} to='/doctors' className='block'>
-                                {({isActive}) => (
-                                    <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>ALL DOCTORS</p>
-                                )}
-                            </NavLink>
-                            <NavLink onClick={()=> setShowMenu(false)} to='/about' className='block'>
-                                {({isActive}) => (
-                                    <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>ABOUT</p>
-                                )}
-                            </NavLink>
-                            <NavLink onClick={()=> setShowMenu(false)} to='/contact' className='block'>
-                                {({isActive}) => (
-                                    <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>CONTACT</p>
-                                )}
-                            </NavLink>
-                        </ul>
-
-                        {token && (
-                            <div className='mt-6 px-5'>
-                                <button onClick={()=> {setShowMenu(false); logout();}} className='w-full text-center rounded-full px-5 py-2.5 font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_0_18px_rgba(216,0,255,0.35)] hover:shadow-[0_0_30px_rgba(216,0,255,0.55)] transition-all duration-300 active:scale-[0.98]'>Logout</button>
                             </div>
+                        ) : (
+                            <NavLink
+                                to='/login'
+                                onClick={()=> setShowMenu(false)}
+                                className='inline-block w-full text-center mt-1 rounded-full px-5 py-2.5 font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_0_18px_rgba(216,0,255,0.35)] hover:shadow-[0_0_30px_rgba(216,0,255,0.55)] transition-all duration-300 hover:scale-[1.02]'
+                            >
+                                Create account
+                            </NavLink>
                         )}
                     </div>
-                </div>,
-                document.body
-            )}
+
+                    <div className='h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent mx-5' />
+
+                    <ul className='flex flex-col gap-1 mt-4 px-5 text-lg font-medium'>
+                        <NavLink onClick={()=> setShowMenu(false)} to='/' className='block'>
+                            {({isActive}) => (
+                                <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>HOME</p>
+                            )}
+                        </NavLink>
+                        <NavLink onClick={()=> setShowMenu(false)} to='/doctors' className='block'>
+                            {({isActive}) => (
+                                <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>ALL DOCTORS</p>
+                            )}
+                        </NavLink>
+                        <NavLink onClick={()=> setShowMenu(false)} to='/about' className='block'>
+                            {({isActive}) => (
+                                <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>ABOUT</p>
+                            )}
+                        </NavLink>
+                        <NavLink onClick={()=> setShowMenu(false)} to='/contact' className='block'>
+                            {({isActive}) => (
+                                <p className={`px-2 py-3 rounded-md transition-all duration-300 ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500' : 'text-gray-700'} hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500`}>CONTACT</p>
+                            )}
+                        </NavLink>
+                    </ul>
+
+                    {token && (
+                        <div className='mt-6 px-5'>
+                            <button onClick={()=> {setShowMenu(false); logout();}} className='w-full text-center rounded-full px-5 py-2.5 font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_0_18px_rgba(216,0,255,0.35)] hover:shadow-[0_0_30px_rgba(216,0,255,0.55)] transition-all duration-300 active:scale-[0.98]'>Logout</button>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div> 
     </div>
 )

@@ -1,5 +1,5 @@
 import add_icon from './add_icon.svg'
-import admin_logo from './admin_logo.svg'
+import admin_logo from './admin_logo.png'
 import appointment_icon from './appointment_icon.svg'
 import cancel_icon from './cancel_icon.svg'
 import doctor_icon from './doctor_icon.svg'
@@ -21,6 +21,8 @@ import admin4 from './admin4.jpg'
 import admin_dash from './admin-dash.jpg'
 import admin_login from './admin-login.jpg'
 import doc_login from './doc-login.jpg'
+
+import admin_badge from './admin_badge.png'
 
 export default {
     add_icon,
@@ -44,5 +46,5 @@ export default {
     admin_login,
     doc_login,
     // Use admin_logo as admin_badge icon fallback
-    admin_badge: admin_logo
+    admin_badge
 }
