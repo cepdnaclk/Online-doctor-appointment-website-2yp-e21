@@ -1,6 +1,6 @@
 import React from 'react';
 // other assets not required here; import only the sticky background image
-import servicesBg from '../assets/background-img-services.png';
+import servicesBg from '../assets/background-img-services.jpeg';
 
 const servicesData = [
     { title: "🦷 Dental Surgery", description: "Our advanced dental unit provides a full spectrum of oral healthcare, from routine check-ups and cleanings to complex surgical procedures. We specialize in dental implants, wisdom tooth removal, and cosmetic dentistry, all in a comfortable and modern environment." },
