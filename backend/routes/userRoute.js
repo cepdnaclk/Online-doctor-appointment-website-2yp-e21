@@ -1,10 +1,10 @@
 import express from 'express'
-<<<<<<< HEAD
+import { registerUser ,loginUser, getProfile, updateProfile } from '../controllers/userController.js'
+import authUser from '../middlewares/authUser.js'
+import upload from '../middlewares/multer.js'
 import { registerUser ,loginUser, getProfile } from '../controllers/userController.js'
 import authUser from '../middlewares/authUser.js'
-=======
-import { registerUser ,loginUser } from '../controllers/userController.js'
->>>>>>> origin/main
+
 
 const userRouter = express.Router()
 
@@ -14,10 +14,14 @@ userRouter.post('/register', registerUser)
 // to log the user
 userRouter.post('/login', loginUser)
 
-<<<<<<< HEAD
 // get user profile details 
 userRouter.get('/get-profile',authUser,getProfile)
 
-=======
->>>>>>> origin/main
+// update user profile
+userRouter.post('/update-profile', upload.single('image'),authUser,updateProfile)
+
+// get user profile details 
+userRouter.get('/get-profile',authUser,getProfile)
+
+
 export default userRouter
