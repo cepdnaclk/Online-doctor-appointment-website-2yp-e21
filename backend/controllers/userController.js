@@ -71,6 +71,7 @@ const loginUser = async (req, res) => {
 
 }
 
+<<<<<<< HEAD
 // API to get user profile data
 const getProfile = async (req,res) => {
     try {
@@ -85,3 +86,6 @@ const getProfile = async (req,res) => {
 
 
 export { registerUser, loginUser, getProfile }
+=======
+export { registerUser, loginUser }
+>>>>>>> origin/main
