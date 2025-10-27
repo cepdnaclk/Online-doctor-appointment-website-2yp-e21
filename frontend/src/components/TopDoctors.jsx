@@ -43,7 +43,7 @@ const TopDoctors = () => {
         </div>
         <button
             onClick={()=> {navigate('/doctors'); scrollTo(0,0)}}
-            className='btn-gradient-shine inline-flex items-center justify-center gap-2 rounded-full mt-10 px-10 py-3 text-sm sm:text-base font-semibold tracking-wide text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_10px_30px_rgba(124,58,237,0.35)] hover:shadow-[0_14px_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-purple-300'
+            className='cursor-pointer btn-gradient-shine inline-flex items-center justify-center gap-2 rounded-full mt-10 px-10 py-3 text-sm sm:text-base font-semibold tracking-wide text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_10px_30px_rgba(124,58,237,0.35)] hover:shadow-[0_14px_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-purple-300'
         >
             More
         </button>

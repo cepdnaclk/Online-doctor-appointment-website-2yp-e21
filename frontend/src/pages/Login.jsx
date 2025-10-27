@@ -25,6 +25,8 @@ const Login = () => {
         const {data} = await axios.post(backendUrl+'/api/user/register',{name,password,email})
         if(data.success){
           localStorage.setItem('token',data.token)
+          setToken(data.token) // update AppContext token so profile is fetched
+          toast.success('Account created')
         }
         else{
           toast.error(data.message)
@@ -34,12 +36,13 @@ const Login = () => {
         if(data.success){
           localStorage.setItem('token',data.token)
           setToken(data.token)
+          toast.success('Login successful')
         }else{
           toast.error(data.message)
         }
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error?.response?.data?.message || error.message)
     }
   }
 
@@ -47,7 +50,7 @@ const Login = () => {
     if(token){
       navigate('/')
     }
-  },[token])
+  },[token, navigate])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-10">

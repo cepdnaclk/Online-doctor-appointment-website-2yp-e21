@@ -21,20 +21,54 @@ const Landing = () => {
         overlay={(
           <div className='pointer-events-none absolute inset-0'>
             {/* Top-left Welcome overlay */}
-            <div className='pointer-events-auto absolute left-5 md:left-10 top-[18vh] md:top-[24vh] max-w-2xl'>
-              <div className='inline-flex items-center gap-3 mb-3 bg-black/30 rounded-full px-3 py-2 backdrop-blur-sm shadow'>
-                {/* <img src={assets.admin_badge} alt='' className='w-8 h-8' /> */}
-                <span className='text-white/90 text-m tracking-wide'>Welcome</span>
+            <div className='pointer-events-auto absolute left-5 md:left-12 top-1/2 transform -translate-y-1/2 max-w-md md:max-w-2xl'>
+              <div className='flex flex-col items-start mb-3'>
+                <div className='inline-flex items-center gap-3 bg-black/30 rounded-full px-3 py-2 backdrop-blur-sm shadow'>
+                  {/* <img src={assets.admin_badge} alt='' className='w-8 h-8' /> */}
+                  <span className='text-white/95 text-sm md:text-base font-semibold tracking-wider'>Welcome</span>
+                </div>
+                <div className='mt-2 text-white/70 text-xs md:text-sm'>{aToken ? 'You are signed in as Admin' : dToken ? 'You are signed in as Doctor' : 'Please sign in to manage the dashboard'}</div>
               </div>
-              <h1
-                className='text-3xl md:text-5xl font-extrabold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] bg-gradient-to-r from-primary-50 via-primary-200 to-primary-400 bg-clip-text text-transparent tracking-tight'
-                style={{
-                  WebkitTextStroke: '1px rgba(255,255,255,0.7)',
-                  textShadow: '0 0 6px rgba(255,255,255,0.8), 0 0 18px rgba(128,28,196,0.55), 0 0 28px rgba(128,28,196,0.35)'
-                }}
-              >
-                {aToken ? 'Admin' : dToken ? 'Doctor' : 'Back'} Dashboard
-              </h1>
+              <div className='relative inline-block'>
+                {/* Inline keyframes and a moving overlay to create a shining effect without global CSS */}
+                <style>{`
+                  @keyframes shine {
+                    0% { transform: translateX(-120%); }
+                    60% { transform: translateX(120%); }
+                    100% { transform: translateX(120%); }
+                  }
+                `}</style>
+
+                <h1
+                  className='text-3xl md:text-5xl font-extrabold leading-tight text-white px-5 py-2 rounded-xl border border-purple-300/40 bg-gradient-to-r from-purple-900/60 via-purple-800/55 to-purple-950/60 shadow-2xl relative overflow-hidden backdrop-blur-sm'
+                  style={{
+                    boxShadow: '0 8px 26px rgba(88,25,120,0.35)',
+                    WebkitTextStroke: '0px rgba(0,0,0,0.0)',
+                    backgroundBlendMode: 'overlay',
+                    opacity: 0.92
+                  }}
+                >
+                  <span className='relative z-10'>{aToken ? 'Admin' : dToken ? 'Doctor' : 'Back'} Dashboard</span>
+
+                  {/* shining overlay */}
+                  <span aria-hidden className='pointer-events-none absolute inset-0 z-20'>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: '-40%',
+                        width: '40%',
+                        height: '100%',
+                        background: 'linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.0) 100%)',
+                        transform: 'skewX(-18deg)',
+                        filter: 'blur(6px) saturate(110%)',
+                        opacity: 0.6,
+                        animation: 'shine 2.6s linear infinite'
+                      }}
+                    />
+                  </span>
+                </h1>
+              </div>
               <p className='mt-2 md:mt-3 px-2 text-white/90 text-sm md:text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]'>
                 Manage appointments, patients, and insights in one place.
               </p>

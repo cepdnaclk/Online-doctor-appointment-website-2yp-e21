@@ -14,11 +14,11 @@ const Footer = () => {
             {/*---middle side section --*/}
             <div className='py-17 px-5'>
                 <p className='text-xl font-medium mb-5'>COMPANY</p>
-                <ul className='flex flex-col gap-2 text-gray-600'>
-                    <li>Home</li>
-                    <li>About us</li>
-                    <li>Contact us</li>
-                    <li>Privacy policy</li>
+                <ul className='flex flex-col gap-2'>
+                    <li><a href='/' className='text-gray-600 hover:text-gray-800 transition'>Home</a></li>
+                    <li><a href='/about' className='text-gray-600 hover:text-gray-800 transition'>About us</a></li>
+                    <li><a href='/contact' className='text-gray-600 hover:text-gray-800 transition'>Contact us</a></li>
+                    <li><a href='/privacy' className='text-gray-600 hover:text-gray-800 transition'>Privacy policy</a></li>
                 </ul> 
             </div>
 

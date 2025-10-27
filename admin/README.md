@@ -1,16 +1,42 @@
-# React + Vite
+# Admin app – env and API base
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This admin SPA uses Vite env variables to choose which backend API to call.
 
-Currently, two official plugins are available:
+## How it chooses the backend URL
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Primary: the query-string override `?api=...` on the page URL.
+	- Example: `http://localhost:5173/login?api=https://your-service.up.railway.app`
+- Fallback: `import.meta.env.VITE_BACKEND_URL` from env files or hosting env vars.
+- We also trim trailing slashes.
 
-## React Compiler
+Both Admin and Doctor contexts use this logic.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Local development
 
-## Expanding the ESLint configuration
+- Use `.env.development` (already added) with:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+	```
+	VITE_BACKEND_URL=http://localhost:4000
+	```
+
+- Start the backend locally on port 4000, then start the admin dev server.
+
+## Production (Netlify)
+
+- Set an environment variable on your Netlify site:
+
+	```
+	VITE_BACKEND_URL=https://your-service.up.railway.app
+	```
+
+- Redeploy the site so the value is baked into the build.
+
+## Quick switching without rebuilding
+
+- Append `?api=` to the URL to temporarily point at a different backend without changing files or rebuilding.
+	- Useful to test the hosted backend while running the admin locally.
+
+## Gotchas
+
+- If the site runs over HTTPS but `VITE_BACKEND_URL` is `http://localhost...`, the browser will block the requests (mixed content).
+- When running on a non-localhost page, we log a console warning if your backend URL still points to `localhost`.

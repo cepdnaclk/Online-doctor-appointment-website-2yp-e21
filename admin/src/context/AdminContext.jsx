@@ -12,7 +12,24 @@ const AdminContextProvider = (props) => {
     const [doctors, setDoctors] = useState([])
     const [appointments, setAppointments] = useState([])
     const [dashData,setDashdata] = useState(false)
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    // Resolve backend URL: prefer ?api= override in the URL, then env var. Trim trailing slashes.
+    const backendUrl = (() => {
+        let fromEnv = import.meta.env.VITE_BACKEND_URL || ''
+        let override = ''
+        try {
+            const params = new URLSearchParams(window.location.search)
+            override = params.get('api') || ''
+        } catch { /* ignore */ }
+        const url = (override || fromEnv || '').replace(/\/+$/, '')
+        if (typeof window !== 'undefined') {
+            const isProdPage = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+            if (isProdPage && /localhost/.test(url)) {
+                // Helpful warning if a production page is trying to call localhost
+                console.warn('[Admin] VITE_BACKEND_URL points to localhost while running on', window.location.origin)
+            }
+        }
+        return url
+    })()
 
     const getAllDoctors = useCallback(async () => {
         try {

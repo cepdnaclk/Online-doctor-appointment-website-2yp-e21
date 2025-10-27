@@ -8,7 +8,23 @@ export const DoctorContext = createContext()
 
 const DoctorContextProvider = (props) =>{
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    // Resolve backend URL: prefer ?api= override in the URL, then env var. Trim trailing slashes.
+    const backendUrl = (() => {
+        let fromEnv = import.meta.env.VITE_BACKEND_URL || ''
+        let override = ''
+        try {
+            const params = new URLSearchParams(window.location.search)
+            override = params.get('api') || ''
+        } catch { /* ignore */ }
+        const url = (override || fromEnv || '').replace(/\/+$/, '')
+        if (typeof window !== 'undefined') {
+            const isProdPage = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+            if (isProdPage && /localhost/.test(url)) {
+                console.warn('[Doctor] VITE_BACKEND_URL points to localhost while running on', window.location.origin)
+            }
+        }
+        return url
+    })()
     const [dToken, setDToken] = useState(localStorage.getItem('dToken') ? localStorage.getItem('dToken') : '')
     const [appointments, setAppointments] = useState([])
     const [profileData, setProfileData] = useState(false)
